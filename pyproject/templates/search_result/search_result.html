@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>search</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="/static/search/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom Fonts -->
+  <link href="/static/search/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+    type="text/css">
+  <link href="/static/search/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="/static/search/css/stylish-portfolio.min.css" rel="stylesheet">
+
+  <!-- search box CSS -->
+  <link href="/static/search_result/css/searchresult.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link href="/static/search_result/css/left_side_menu.css" rel="stylesheet">
+  <link href="/static/search_result/css/mapdiv.css" rel="stylesheet">
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <a class="menu-toggle rounded" href="#">
+    <i class="fas fa-bars"></i>
+  </a>
+  <nav id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+        <a class="js-scroll-trigger" href="#page- top">"아이디" 님</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#page-top">프로필</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#about">정보수정</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#services">검색내역</a>
+      </li>
+    </ul>
+  </nav>
+  <!-- searchbox/header -->
+  <div class="searchbox">
+    <form>
+      <input type="text" placeholder="검색어 입력">
+      <button type="submit"></button>
+    </form>
+  </div>
+  <!-- left side menu -->
+  <div class="leftside">
+    <div>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <div>
+        <div>
+          <span>
+            <strong></strong>
+            <a href=""></a>
+            <a href=""></a>
+            <a href=""></a>
+            <a href=""></a>
+            <a href=""></a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- map div -->
+  <div class="mapdiv">
+    <div id="map" style="width:100%;height:100%;"></div>
+
+    <script>
+      // 기본지도 및 줌 생성
+      var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        scaleControl: false,
+        logoControl: false,
+        mapDataControl: false,
+        zoomControl: true,
+        zoomControlOptions: {
+          style: naver.maps.ZoomControlStyle.SMALL,
+          position: naver.maps.Position.TOP_RIGHT
+        },
+        minZoom: 1
+      });
+      // 마커 표시
+      var addr = [
+        {
+          Lat: 37.5609447,
+          Lng: 126.9807156
+        }
+      ];
+
+
+      for (var i in addr){
+        var markers = new naver.maps.Marker({
+        position: new naver.maps.LatLng(addr[i].Lat, addr[i].Lng),
+        map: map
+      });
+      }
+      
+       
+
+      // 마커 클릭시 정보창 형성
+      var contentString = [
+        '<div class="iw_inner">',
+        '   <h3>서울특별시청</h3>',
+        '   <p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청<br />',
+        '       <img src="" width="55" height="55" alt="서울시청" class="thumb" /><br />',
+        '       02-120 | 공공,사회기관 &gt; 특별,광역시청<br />',
+        '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a>',
+        '   </p>',
+        '</div>'
+      ].join('');
+
+
+      var infowindow = new naver.maps.InfoWindow({
+        content: contentString
+      });
+
+      naver.maps.Event.addListener(markers, "click", function (e) {
+        if (infowindow.getMap()) {
+          infowindow.close();
+        } else {
+          infowindow.open(map, markers);
+        }
+      });
+      infowindow.open(map, markers);
+      // 검색시 해당 위치 이동
+      var infoWindow = new naver.maps.InfoWindow({
+        anchorSkew: true
+      });
+
+      map.setCursor('pointer');
+
+      //주소검색을 통한 지도 이동, 건물명 불가
+      function searchCoordinateToAddress(latlng) {
+        var tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
+
+        infoWindow.close();
+
+        naver.maps.Service.reverseGeocode({
+          location: tm128,
+          coordType: naver.maps.Service.CoordType.TM128
+        }, function (status, response) {
+          if (status === naver.maps.Service.Status.ERROR) {
+            return alert('Something Wrong!');
+          }
+
+          var items = response.result.items,
+            htmlAddresses = [];
+
+          for (var i = 0, ii = items.length, item, addrType; i < ii; i++) {
+            item = items[i];
+            addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]';
+
+            htmlAddresses.push((i + 1) + '. ' + addrType + ' ' + item.address);
+          }
+
+          infoWindow.setContent([
+            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
+            htmlAddresses.join('<br />'),
+            '</div>'
+          ].join('\n'));
+
+          infoWindow.open(map, latlng);
+        });
+      }
+
+      // result by latlng coordinate
+      function searchAddressToCoordinate(address) {
+        naver.maps.Service.geocode({
+          address: address
+        }, function (status, response) {
+          if (status === naver.maps.Service.Status.ERROR) {
+            return alert('Something Wrong!');
+          }
+
+          var item = response.result.items[0],
+            addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]',
+            point = new naver.maps.Point(item.point.x, item.point.y);
+
+          infoWindow.setContent([
+            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+            '<h4 style="margin-top:5px;">검색 주소 : ' + response.result.userquery + '</h4><br />',
+            addrType + ' ' + item.address + '<br />',
+            '</div>'
+          ].join('\n'));
+
+
+          map.setCenter(point);
+          infoWindow.open(map, point);
+        });
+      }
+      function initGeocoder() {
+        map.addListener('click', function (e) {
+          searchCoordinateToAddress(e.coord);
+        });
+
+        $('#address').on('keydown', function (e) {
+          var keyCode = e.which;
+
+          if (keyCode === 13) { // Enter Key
+            searchAddressToCoordinate($('#address').val());
+          }
+        });
+
+        $('#submit').on('click', function (e) {
+          e.preventDefault();
+
+          searchAddressToCoordinate($('#address').val());
+        });
+
+      }
+      naver.maps.onJSContentLoaded = initGeocoder;
+
+    </script>
+  </div>
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="/static/search/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/search/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="/static/search/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="/static/search/js/stylish-portfolio.min.js"></script>
+
+</body>
+
+</html>

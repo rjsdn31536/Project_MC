@@ -1,0 +1,40 @@
+* {box-sizing: border-box;}
+body{margin: 0;}
+div {padding:0 10px;}
+form {
+  position: relative;
+  width: 500px;
+  margin:0 auto; 
+}
+
+/* .d4 {background: #F15B42;} */
+.searchbox form {
+  background: white;
+  border-bottom: 4px solid #000069;
+}
+.searchbox input, .searchbox button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.searchbox input {
+  width: 100%;
+  height: 42px;
+  padding-left: 15px;
+}
+.searchbox button {
+  height: 42px;
+  width: 42px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+.searchbox button:before {
+  content: "\f178";
+  font-family: FontAwesome;
+  font-size: 20px;
+  color: #be290e;
+}
+
+
