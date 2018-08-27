@@ -116,8 +116,8 @@ school.rename(columns={"교육청":"시도",
 
 for i in school.index:
     # 관리기관의 data가 nan인 경우 어차피 교육청이 관리하므로 교육청을 복사해줌!
-    if type(school['관리기관'][i]) == float:
-        school['관리기관'][i] = school['시도'][i] + '교육청'
+    if type(school.loc[i].관리기관) == float:
+        school.loc[i].관리기관 = school.loc[i].시도 + '교육청'
 
 # 개방시작, 개방종료 시간 양식 통일화
 # ex1) 0:00 -> 00:00
@@ -130,7 +130,6 @@ for cols in school.keys():
                 if np.isnan(i):
                     continue
             if len(i) == 4:
-                print(i)
                 school[cols][num] = '0' + i
             num += 1
 
@@ -170,7 +169,7 @@ for i in school.index:
         # 구글 api를 활용하여 검색
         # 건물명으로도 확인이 가능하여 더 섬세한 검색 가능
         # 예외처리가 실질적으로 필요하지 않은 구문이지만 Index가 잘못됐다는 에러가 나옴
-        # 분명 for i in park.index로 존재하는 index만 반복해야하는게 맞지만 메모리 처리상에서 충돌하는듯
+        # 분명 for i in school.index로 존재하는 index만 반복해야하는게 맞지만 메모리 처리상에서 충돌하는듯
         # 예외처리를 해두면 문제는 발생하지 않음! 한칸 넘어가서 데이터를 처리하는 것과 같은 문제 X
         # 나중에 다시 확인하여 확실하게 할것! 일단 데이터는 확실하게 잘 들어감.
         try :
@@ -191,3 +190,9 @@ for cols in school.keys():
         month, day = cols.split('.')
         name = month+'_'+day
         school.rename(columns={cols:name}, inplace=True)
+
+# park 데이터와 school 데이터 combine
+combined = pd.merge(park, school, how='outer')
+
+# final.csv를 저장
+combined.to_csv('final.csv', encoding='utf-8-sig')
