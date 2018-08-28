@@ -60,26 +60,15 @@
   </div>
   <!-- left side menu -->
   <div class="leftside">
-    <div>
-      <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
+    <div style="overflow:auto;height:100%">
+      <ul> 
+      {% for i in range(1,4) %}
+          <li>
+            <h3>'주차장' 명</h3>
+            <p>주소 : {{addr_x }}</p>
+          </li>
+      {% endfor %} 
       </ul>
-      <div>
-        <div>
-          <span>
-            <strong></strong>
-            <a href=""></a>
-            <a href=""></a>
-            <a href=""></a>
-            <a href=""></a>
-            <a href=""></a>
-          </span>
-        </div>
-      </div>
     </div>
 
   </div>
