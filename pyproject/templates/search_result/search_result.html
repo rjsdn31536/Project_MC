@@ -91,7 +91,7 @@
     <script>
       // 기본지도 및 줌 생성
       var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        center: new naver.maps.LatLng({{addr_x}}, {{addr_y}}),
         scaleControl: false,
         logoControl: false,
         mapDataControl: false,
@@ -102,137 +102,122 @@
         },
         minZoom: 1
       });
-      // 마커 표시
-      var addr = [
-        {
-          Lat: {{addr_x}},
-          Lng: {{addr_y}}
-        }
-      ];
 
+      ////////////////////
+      var HOME_PATH = window.HOME_PATH || '.';
+      var MARKER_SPRITE_X_OFFSET = 29,
+          MARKER_SPRITE_Y_OFFSET = 50,
+          MARKER_SPRITE_POSITION = {
+            0 : [{{addr_x}}, {{addr_y}}],
+            1 : [{{addr_x+0.001}}, {{addr_y+0.001}}],
+            2 : [{{addr_x-0.003}}, {{addr_y}}],
+            3 : [{{addr_x+0.004}}, {{addr_y+0.001}}],
+          };
 
-      for (var i in addr){
-        var markers = new naver.maps.Marker({
-        position: new naver.maps.LatLng(addr[i].Lat, addr[i].Lng),
-        map: map
-      });
-      }
-      
-       
+      var bounds = map.getBounds(),
+          southWest = bounds.getSW(),
+          northEast = bounds.getNE(),
+          lngSpan = northEast.lng() - southWest.lng(),
+          latSpan = northEast.lat() - southWest.lat();
 
-      // 마커 클릭시 정보창 형성
-      var contentString = [
-        '<div class="iw_inner">',
-        '   <h3>서울특별시청</h3>',
-        '   <p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청<br />',
-        '       <img src="" width="55" height="55" alt="서울시청" class="thumb" /><br />',
-        '       02-120 | 공공,사회기관 &gt; 특별,광역시청<br />',
-        '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a>',
-        '   </p>',
-        '</div>'
-      ].join('');
+      var markers = [],
+          infoWindows = [];
 
+      for (var key in MARKER_SPRITE_POSITION) {
 
-      var infowindow = new naver.maps.InfoWindow({
-        content: contentString
-      });
+          var position = new naver.maps.LatLng(
+              MARKER_SPRITE_POSITION[key][0],
+              MARKER_SPRITE_POSITION[key][1]);
 
-      naver.maps.Event.addListener(markers, "click", function (e) {
-        if (infowindow.getMap()) {
-          infowindow.close();
-        } else {
-          infowindow.open(map, markers);
-        }
-      });
-      infowindow.open(map, markers);
-      // 검색시 해당 위치 이동
-      var infoWindow = new naver.maps.InfoWindow({
-        anchorSkew: true
-      });
+          var marker = new naver.maps.Marker({
+              map: map,
+              position: position,
+              title: key,
+              icon: {
+                  url: HOME_PATH +'/img/example/sp_pins_spot_v3.png',
+                  size: new naver.maps.Size(24, 37),
+                  anchor: new naver.maps.Point(12, 37),
+                  origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
+              },
+              zIndex: 100
+          });
 
-      map.setCursor('pointer');
+          var cont_a = {{ member['age'] }}
 
-      //주소검색을 통한 지도 이동, 건물명 불가
-      function searchCoordinateToAddress(latlng) {
-        var tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
-
-        infoWindow.close();
-
-        naver.maps.Service.reverseGeocode({
-          location: tm128,
-          coordType: naver.maps.Service.CoordType.TM128
-        }, function (status, response) {
-          if (status === naver.maps.Service.Status.ERROR) {
-            return alert('Something Wrong!');
-          }
-
-          var items = response.result.items,
-            htmlAddresses = [];
-
-          for (var i = 0, ii = items.length, item, addrType; i < ii; i++) {
-            item = items[i];
-            addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]';
-
-            htmlAddresses.push((i + 1) + '. ' + addrType + ' ' + item.address);
-          }
-
-          infoWindow.setContent([
-            '<div style="padding:10px;min-width:200px;line-height:150%;">',
-            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
-            htmlAddresses.join('<br />'),
+          var contentString = [
+            '<div class="iw_inner">',
+            // 주차장명
+            '   <h3>서울특별시청</h3>',
+            // 주차장주소
+            '   <p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청<br />',
+            '       <img src="" width="55" height="55" alt="서울시청" class="thumb" /><br />',
+            '       02-120 | 공공,사회기관 &gt; 특별,광역시청<br />',
+            '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a><br />',
+                   MARKER_SPRITE_POSITION[key][0],
+                   cont_a,
+            '   </p>',
             '</div>'
-          ].join('\n'));
+          ].join('');
+          var infoWindow = new naver.maps.InfoWindow({
+              content: contentString
+          });
 
-          infoWindow.open(map, latlng);
-        });
-      }
+          markers.push(marker);
+          infoWindows.push(infoWindow);
+      };
 
-      // result by latlng coordinate
-      function searchAddressToCoordinate(address) {
-        naver.maps.Service.geocode({
-          address: address
-        }, function (status, response) {
-          if (status === naver.maps.Service.Status.ERROR) {
-            return alert('Something Wrong!');
+      naver.maps.Event.addListener(map, 'idle', function() {
+          updateMarkers(map, markers);
+      });
+
+      function updateMarkers(map, markers) {
+
+          var mapBounds = map.getBounds();
+          var marker, position;
+
+          for (var i = 0; i < markers.length; i++) {
+
+              marker = markers[i]
+              position = marker.getPosition();
+
+              if (mapBounds.hasLatLng(position)) {
+                  showMarker(map, marker);
+              } else {
+                  hideMarker(map, marker);
+              }
           }
-
-          var item = response.result.items[0],
-            addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]',
-            point = new naver.maps.Point(item.point.x, item.point.y);
-
-          infoWindow.setContent([
-            '<div style="padding:10px;min-width:200px;line-height:150%;">',
-            '<h4 style="margin-top:5px;">검색 주소 : ' + response.result.userquery + '</h4><br />',
-            addrType + ' ' + item.address + '<br />',
-            '</div>'
-          ].join('\n'));
-
-
-          map.setCenter(point);
-          infoWindow.open(map, point);
-        });
       }
-      function initGeocoder() {
-        map.addListener('click', function (e) {
-          searchCoordinateToAddress(e.coord);
-        });
 
-        $('#address').on('keydown', function (e) {
-          var keyCode = e.which;
+      function showMarker(map, marker) {
 
-          if (keyCode === 13) { // Enter Key
-            searchAddressToCoordinate($('#address').val());
+          if (marker.setMap()) return;
+          marker.setMap(map);
+      }
+
+      function hideMarker(map, marker) {
+
+          if (!marker.setMap()) return;
+          marker.setMap(null);
+      }
+
+      // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+      function getClickHandler(seq) {
+          return function(e) {
+              var marker = markers[seq],
+                  infoWindow = infoWindows[seq];
+
+              if (infoWindow.getMap()) {
+                  infoWindow.close();
+              } else {
+                  infoWindow.open(map, marker);
+              }
           }
-        });
-
-        $('#submit').on('click', function (e) {
-          e.preventDefault();
-
-          searchAddressToCoordinate($('#address').val());
-        });
-
       }
-      naver.maps.onJSContentLoaded = initGeocoder;
+
+      for (var i=0, ii=markers.length; i<ii; i++) {
+          naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+      }
+      ///////////////
 
     </script>
   </div>
