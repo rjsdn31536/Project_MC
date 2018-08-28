@@ -53,8 +53,8 @@
   </nav>
   <!-- searchbox/header -->
   <div class="searchbox">
-    <form>
-      <input type="text" placeholder="검색어 입력">
+    <form action='/search/result/' method='POST'>
+      <input type="text" placeholder="검색어 입력" name="address">
       <button type="submit"></button>
     </form>
   </div>
@@ -62,10 +62,10 @@
   <div class="leftside">
     <div style="overflow:auto;height:100%">
       <ul> 
-      {% for i in range(1,4) %}
+      {% for i in park.keys() %}
           <li>
-            <h3>'주차장' 명</h3>
-            <p>주소 : {{addr_x }}</p>
+            <h3>{{park[i]['p_name']}}</h3>
+            <p>{{park[i]['p_address']}}</p>
           </li>
       {% endfor %} 
       </ul>
@@ -77,6 +77,8 @@
     <div id="map" style="width:100%;height:100%;"></div>
 
     <script>
+
+      
       // 기본지도 및 줌 생성
       var map = new naver.maps.Map('map', {
         center: new naver.maps.LatLng({{addr_x}}, {{addr_y}}),
@@ -91,20 +93,17 @@
         minZoom: 1
       });
 
-      ////////////////////
+      // park json 파일을 park에 저장
+      var park = {{ park|tojson }}
       var HOME_PATH = window.HOME_PATH || '.';
 
-      var park = {{park}}
       var park_length = park.length
-      var park_MARKER = {}
+      var MARKER_SPRITE_POSITION = {}
 
-      
-      var MARKER_SPRITE_POSITION = {
-            0 : [{{addr_x}}, {{addr_y}}],
-            1 : [{{addr_x+0.001}}, {{addr_y+0.001}}],
-            2 : [{{addr_x-0.003}}, {{addr_y}}],
-            3 : [{{addr_x-0.005}}, {{addr_y-0.01}}],
-          };
+      // 마커를 표시하기 위하여 마커(위도,경도) 저장
+      for(var key in park){
+        MARKER_SPRITE_POSITION[key] = [park[key]['p_lat'], park[key]['p_long']]
+      }
 
       var bounds = map.getBounds(),
           southWest = bounds.getSW(),
@@ -134,20 +133,15 @@
               zIndex: 100
           });
 
-          var cont_a = {{ member['age'] }}
-
           var contentString = [
             '<div class="iw_inner">',
             // 주차장명
-            '   <h3>'+park[0]+'</h3>',
+            '   <h3>'+park[key]['p_name']+'</h3>',
             // 주차장주소
-            '   <p>주 소 : '+{{addr_x}}+'<br />',
-            '전화번호 : ' + {{addr_x}} + ' <br />',
-           // '주차장 유형 : ' + {{addr_x}} + ' <br />',
-           // '관리기관 : ' + {{addr_x}} + ' <br />',
-                   MARKER_SPRITE_POSITION[key][0],
-                   {{addr_x}},
-                   cont_a,
+            '   <p>주 소 : '+park[key]['p_address']+'<br />',
+            '전화번호 : ' + park[key]['p_number'] + ' <br />',
+            '주차장 유형 : ' + park[key]['p_type'] + ' <br />',
+            '관리기관 : ' + park[key]['p_admit'] + ' <br />',
             '   </p>',
             '</div>'
           ].join('');
