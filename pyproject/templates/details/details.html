@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>상세 정보</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/details/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet">
+    <link href="/static/details/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
+    
+
+    <!-- Custom styles for this template -->
+    <link href="/static/details/css/resume.min.css" rel="stylesheet">
+    <link href="/static/details/css/form.css" rel="stylesheet">
+    <link href="/static/details/css/detaiList.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
+    
+    <!-- 좋아요 버튼 -->
+
+  </head>
+
+  <body id="page-top">
+<!-- 내비게이션 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-none d-lg-block">
+          <h3>'주차장' 명</h3>
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#about">상세정보</a>
+          </li>
+          <li class="nav-item">
+            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#experience">가고싶어요</a>
+          </li>
+          <li class="nav-item">
+            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#education">한줄평</a>
+          </li>
+          <li class="nav-item">
+            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#skills">누가 여기 올까요?</a>
+          </li>
+          <li class="nav-item" style="margin-top:20px">
+            <h5>만족도 조사</h5>
+            <div>
+              <form action="/">
+                <input type="button" value="좋아요" name="like"> 좋아요 갯수
+              </form>
+            </div>
+            <div>
+              <form action="/">
+                <input type="button" value="싫어요" name="dislike"> 싫아요 갯수
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div class="container-fluid p-0">
+      <!-- 상세정보 -->
+      <section class="resume-section p-3 p-lg-5 d-flex d-column" id="about">
+        <ul id="aboutList" style="height:30%">
+          <li>
+            <h2>
+              '주차장' 명
+            </h2>
+        </li>
+          <li>
+            <h5>
+              유형 : 'db 연동'
+            </h5>
+          </li>
+          <li >
+            <h3>
+              주소 : 'db 연동'
+            </h3>
+          </li>
+          <li >
+            <h5>
+              번호 : 'db연동''
+            </h5>
+          </li>
+          <li style="width:800px;">
+           <div id="map" style="width:100%;height:400px;"></div>
+           <!-- 주차장에 따른 위경도 값을 가져와서 하단의 LatLng에 대입 -->
+           <script>
+             // db로 addr 받아오면 될듯!
+              var addr = [{
+                Lat: {{addr_x}} ,
+                Lng: {{addr_y}}
+              }];
+ 
+              var map = new naver.maps.Map('map', {
+                      center: new naver.maps.LatLng(addr[0].Lat,addr[0].Lng),
+                      scaleControl: false,
+                      logoControl: false,
+                      mapDataControl: false,
+                      zoomControl: true,
+                      zoomControlOptions: {
+                        style: naver.maps.ZoomControlStyle.SMALL,
+                        position: naver.maps.Position.TOP_RIGHT
+                      },
+                      minZoom: 1
+                    });
+
+              var markers = new naver.maps.Marker({
+                position: new naver.maps.LatLng(addr[0].Lat,addr[0].Lng),
+                map: map
+              });
+           </script>
+           
+          </li>
+        </ul>
+      
+      </section>
+
+      <hr class="m-0">
+      <!-- 가고 싶어요 -->
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
+        <div>
+          <h2>주차장 개방 날짜</h2>
+        </div>
+        <div>
+          <h3>원하는 날짜를 선택하여 저장하세요</h3>
+        </div>
+        <div id="formBox">
+          <form action="#">
+            {% for i in dateList %}
+            <input type="checkbox"  name="날짜 선택"><label>{{ i }}</label> <br>
+            {% endfor %}
+            <input class="subMit" type="submit" value="저장">
+            <input class="canCel" type="reset" value="취소">
+          </form> 
+      </div>
+      <div>
+        <h4>특이사항</h4>
+        <p>
+          db 연동
+        </p>
+      </div>
+
+      </section>
+
+      <hr class="m-0">
+      <!-- 한줄평 -->
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
+        <div>
+          <ul>
+            <li style="display:block">
+              <h2>한줄평</h2>
+            </li>
+            <li style="display:block">
+              <h3>장소에 대해 평가해주세요</h3>
+            </li>
+          </ul>
+          <div style="float:left">
+              <textarea id="ment" name="ment" row="1" cols="1" rows="1" class="input_tx" maxlength="140" style="margin: 0px; height: 60px; width: 500px;"></textarea>
+              <p class="tx_length"><em id="ment_cnt">0</em>/140</p>
+            </div>
+            <div style="float:left;">
+              <input type="image" id="pointAddButton" src="https://ssl.pstatic.net/static/movie/2012/06/score_btn_submit.png" alt="등록" style="height:60px">
+            </div>  
+        </div>
+        
+
+      </section>
+
+      <hr class="m-0">
+      <!-- 누가 여기 올까요? -->
+      <!-- 데이터 기반으로한 시각화자료배치 -->
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills">
+        <div class="my-auto">
+          <h2 class="mb-5">분석기반 시각화자료</h2>
+
+          <div class="subheading mb-3">Programming Languages &amp; Tools</div>
+          
+          <div class="subheading mb-3">Workflow</div>
+       
+        </div>
+      </section>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/details/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/details/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="/static/details/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/static/details/js/resume.min.js"></script>
+  </body>
+
+</html>
