@@ -105,13 +105,17 @@
 
       ////////////////////
       var HOME_PATH = window.HOME_PATH || '.';
-      var MARKER_SPRITE_X_OFFSET = 29,
-          MARKER_SPRITE_Y_OFFSET = 50,
-          MARKER_SPRITE_POSITION = {
+
+      var park = {{park}}
+      var park_length = park.length
+      var park_MARKER = {}
+
+      
+      var MARKER_SPRITE_POSITION = {
             0 : [{{addr_x}}, {{addr_y}}],
             1 : [{{addr_x+0.001}}, {{addr_y+0.001}}],
             2 : [{{addr_x-0.003}}, {{addr_y}}],
-            3 : [{{addr_x+0.004}}, {{addr_y+0.001}}],
+            3 : [{{addr_x-0.005}}, {{addr_y-0.01}}],
           };
 
       var bounds = map.getBounds(),
@@ -147,13 +151,14 @@
           var contentString = [
             '<div class="iw_inner">',
             // 주차장명
-            '   <h3>서울특별시청</h3>',
+            '   <h3>'+park[0]+'</h3>',
             // 주차장주소
-            '   <p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청<br />',
-            '       <img src="" width="55" height="55" alt="서울시청" class="thumb" /><br />',
-            '       02-120 | 공공,사회기관 &gt; 특별,광역시청<br />',
-            '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a><br />',
+            '   <p>주 소 : '+{{addr_x}}+'<br />',
+            '전화번호 : ' + {{addr_x}} + ' <br />',
+           // '주차장 유형 : ' + {{addr_x}} + ' <br />',
+           // '관리기관 : ' + {{addr_x}} + ' <br />',
                    MARKER_SPRITE_POSITION[key][0],
+                   {{addr_x}},
                    cont_a,
             '   </p>',
             '</div>'

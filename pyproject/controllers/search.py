@@ -16,6 +16,8 @@ gmaps = googlemaps.Client(key='AIzaSyCoLfrAJNvN7zqZpqNGby1xYuZTOzkOGf0')
 
 search = Blueprint('search', __name__, template_folder='search')
 
+park = { 0 : [1,2,3] }
+# park = [[2,'강원도','새명동','노외', '춘천시', 37.8796757, 127.7296357, '춘천도시공사', '00-131','무료','14','15','16','17','18'],[3,'강원도','야외주차장','노외', '춘천시', 37.8792, 127.7292, '춘천도시공사', '111-1241','무료','14','15','16','17','18']]
 
 
 # http://localhost:5000/search/
@@ -27,8 +29,8 @@ def searchpage():
 def searchResult():
     address = request.form['address']
     addr_ll = gmaps.geocode(address, language='ko')[0]['geometry']['location']
-    addr_x = str(addr_ll['lat'])
-    addr_y = str(addr_ll['lng'])
+    addr_x = addr_ll['lat']
+    addr_y = addr_ll['lng']
 
     # return render_template('search_result/search_result.html')
-    return render_template('search_result/search_result.html', address=str(address), addr_x=float(addr_x), addr_y=float(addr_y), member=dict(form_dict))
+    return render_template('search_result/search_result.html', address=str(address), addr_x=addr_x, addr_y=addr_y, member=dict(form_dict), park=park)
