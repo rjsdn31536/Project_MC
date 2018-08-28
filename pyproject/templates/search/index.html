@@ -58,8 +58,9 @@
           <em style="color:whitesmoke;fon">주소 및 주자창 이름을 검색해보세요</em>
         </h3>
         <div class="searchbox">
-          <form>
-            <input type="search" placeholder="주소,장소명 입력">
+        <!-- POST 사용으로 address에 input 값을 넣어줌 -->
+          <form action='/search/result/' method='POST'>
+            <input type="search" placeholder="주소,장소명 입력" name="address">
             <button type="submit"></button>
           </form>
           </div>
