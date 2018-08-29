@@ -27,7 +27,6 @@ def detailpage():
 
 @details.route("/<p_code>")
 def detailpage2(p_code):
-    print(p_code)
     p_code_num = int(re.findall('\d+', p_code)[0])
 
     # DB 연동 - 연결
@@ -40,7 +39,6 @@ def detailpage2(p_code):
     cursor.execute(execute_str)
     park_data = cursor.fetchall()
 
-    print(p_code)
 
     # initialize park(반복될때마다 데이터가 축적되면 안되므로))
     park = dict()
@@ -70,7 +68,10 @@ def detailpage2(p_code):
             if 'date' in key:
                 if type(park[park_num][key]) == float or park[park_num][key] == '':
                     park[park_num][key] = '정보없음'
-        print(park[park_num])
+            if 'desp' in key:
+                print(park[park_num][key])
+                if park[park_num][key] == None:
+                    park[park_num][key] = '정보없음'
     return render_template('details/details.html', park=park, p_num = park_num)
 
 # 날짜 선택 값이 db로 저장
