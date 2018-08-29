@@ -1,5 +1,8 @@
-import pymysql
 from flask import Blueprint, render_template, request
+import googlemaps
+import pymysql
+import numpy as np
+import pandas as pd
 # db연동
 # conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb', charset='utf8')
 
@@ -17,6 +20,11 @@ def detailpage():
     # 만족도 조사
     return render_template('details/details.html',
     dateList=dateList, addr_x=addr_x,addr_y=addr_y)
+
+@details.route("/<p_code>")
+def detailpage2(p_code):
+    print('p_code=====', p_code)
+    return 'ok'
 
 # 날짜 선택 값이 db로 저장
 # @details.route("회원관리 page", methods = ["POST"])
