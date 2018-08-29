@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, session
 import googlemaps
 import pymysql
 import numpy as np
@@ -11,8 +11,6 @@ gmaps = googlemaps.Client(key='AIzaSyCoLfrAJNvN7zqZpqNGby1xYuZTOzkOGf0')
 search = Blueprint('search', __name__, template_folder='search')
 
 park = dict()
-
-
 
 # http://localhost:5000/search/
 @search.route("/", methods=['GET', 'POST'])
@@ -40,7 +38,8 @@ def searchpage():
 
     # 로그인에 성공한 경우
     else:
-        return render_template('search/index.html')
+        session['ID'] = e_mail
+        return render_template('search/index.html', member_data=member_data)
 
 @search.route("/result/", methods=['POST'])
 def searchResult():
@@ -90,3 +89,4 @@ def searchResult():
         }
 
     return render_template('search_result/search_result.html', address=str(address), addr_x=addr_x, addr_y=addr_y, park = park)
+

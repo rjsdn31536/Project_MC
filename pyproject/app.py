@@ -1,10 +1,12 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, session
 from controllers.search import search
 from controllers.details import details
+import pymysql
 
 # app 객체 생성
 app = Flask(__name__)
+app.secret_key = "e21lr1or2AKO@2rkARKM@RAR@ANK2raar,SD2"
 
 @app.route("/")
 def login():
@@ -16,8 +18,20 @@ def login_result():
 
 @app.route("/member")
 def member():
-    return render_template('member/member.html')
+    # DB 연동 - 연결
+    conn = pymysql.connect(host='127.0.0.1',user = 'root',
+                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    # 실행자 생성
+    cursor = conn.cursor()   
 
+    email = session['ID']
+
+    execute_str = 'select * from member where e_mail = "' + email + '"'
+
+    cursor.execute(execute_str)
+    member_data = cursor.fetchall()
+
+    return render_template('member/member.html', member_data = member_data)
 
 @app.route("/signup_com")
 def signup_com():
