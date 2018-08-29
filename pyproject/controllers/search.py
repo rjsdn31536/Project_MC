@@ -31,7 +31,7 @@ def searchResult():
     
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                       password='1234', db='Project_MC',charset='utf8')
+                       password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     execute_str = "select * from parkinglot where (p_lat > " + str(b) + ") and (p_lat < " + str(a) + ") and (p_long > "+ str(d) + ") and (p_long < " + str(c)+ ")"

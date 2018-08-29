@@ -76,7 +76,7 @@
       </ul>
       <ul style="padding:0">
       {% for i in park.keys() %}
-        <a href="http://127.0.0.1:5000/details/" target="_blank">
+        <a href="http://127.0.0.1:5000/details/{{i}}" target="_blank">
           <li style="display:block">
               <h3>{{park[i]['p_name']}}</h3>
               <p >{{park[i]['p_address']}}</p>
