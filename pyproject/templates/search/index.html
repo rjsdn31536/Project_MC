@@ -24,6 +24,8 @@
     <!-- search box CSS -->
     <link href="/static/search/css/searchbox.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- navmodal CSS -->
+    <link rel="stylesheet" href="/static/search/css/navmodal.css">
 
   </head>
 
@@ -38,14 +40,35 @@
         <li class="sidebar-brand">
           <a class="js-scroll-trigger" href="#page- top">"아이디" 님</a>
         </li>
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="#page-top">프로필</a>
+        <li class="sidebar-nav-item" style="margin-top:5px;margin-left:5px">
+            <a class="js-scroll-trigger" href="#" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
         </li>
-        <li class="sidebar-nav-item">
+        <li class="sidebar-nav-item" style="margin-top:10px">
           <a class="js-scroll-trigger" href="#about">정보수정</a>
         </li>
         <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="#services">검색내역</a>
+            <a class="js-scroll-trigger" href="#about">데이터 Lab</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span style="color:white">검색내역</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="width:100%;overflow:auto;height:450px;">
+            <ul style="padding:0;border-bottom:1px solid black;text-align:center ">
+              <li style="display:block">내역 : ??건 </li>
+            </ul>
+            <ul class='dropdownList'>
+              {% for i in range(1,10) %}
+              <a href="http://127.0.0.1:5000/details/" target="_blank" style="color:black">
+                <li>
+                  <h4>주차장 명</h4>
+                  <p>선택한 날짜 간략하게</p><hr>
+                </li>
+              </a>
+              {% endfor %}
+            </ul>  
+          </div>
         </li>
       </ul>
     </nav>
@@ -76,6 +99,7 @@
     <!-- Bootstrap core JavaScript -->
     <script src="/static/search/vendor/jquery/jquery.min.js"></script>
     <script src="/static/search/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
     <!-- Plugin JavaScript -->
     <script src="/static/search/vendor/jquery-easing/jquery.easing.min.js"></script>

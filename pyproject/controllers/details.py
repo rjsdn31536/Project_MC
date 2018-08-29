@@ -7,8 +7,6 @@ import pandas as pd
 import re
 
 
-# db연동
-# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb', charset='utf8')
 
 
 details = Blueprint('details', __name__, template_folder='details')
@@ -74,13 +72,5 @@ def detailpage2(p_code):
                     park[park_num][key] = '정보없음'
     return render_template('details/details.html', park=park, p_num = park_num)
 
-# 날짜 선택 값이 db로 저장
-# @details.route("회원관리 page", methods = ["POST"])
-# def memberpage():
-#     cursor  = conn.curosr()
-#     cursor.execute("insert into ")
-#     conn.commit
-#     conn.close()
-#     return render_template()
 
 

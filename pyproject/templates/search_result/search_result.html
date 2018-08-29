@@ -30,7 +30,7 @@
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
   <style>
   a:link {color:black;border:none}
-  a:viseted {color:black;border:none}
+  a:visited {color:black;border:none}
   a:hover {color:green}
   a:active {color:green}
   
@@ -159,11 +159,7 @@
             '주차장 유형 : ' + park[key]['p_type'] + ' <br />',
             '관리기관 : ' + park[key]['p_admit'] + ' <br />',
             '   </p>',
-<<<<<<< HEAD
-            '<a href="http://127.0.0.1:5000/details/"'+key+'target="_blank" >상세보기</a>',
-=======
             '<a href="http://127.0.0.1:5000/details/'+key+'" target="_blank" >상세보기</a>',
->>>>>>> cae5eafe5246dbc1edfaaf7db6f4c02cfb560233
             '</div>'
           ].join('');
           var infoWindow = new naver.maps.InfoWindow({
