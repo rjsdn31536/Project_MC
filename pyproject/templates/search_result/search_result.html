@@ -159,7 +159,7 @@
             '주차장 유형 : ' + park[key]['p_type'] + ' <br />',
             '관리기관 : ' + park[key]['p_admit'] + ' <br />',
             '   </p>',
-            '<a href="http://127.0.0.1:5000/details/10" target="_blank" >상세보기</a>',
+            '<a href="http://127.0.0.1:5000/details/"'+key+'target="_blank" >상세보기</a>',
             '</div>'
           ].join('');
           var infoWindow = new naver.maps.InfoWindow({

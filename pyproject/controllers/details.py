@@ -32,7 +32,7 @@ def detailpage2(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                       password='1234', db='pythondb',charset='utf8')
+                       password='1234', db='Project_MC',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     execute_str = "select * from parkinglot where p_code = " + '"' + str(p_code_num) + '"'
