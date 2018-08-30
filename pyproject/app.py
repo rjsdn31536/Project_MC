@@ -11,7 +11,7 @@ app.secret_key = "e21lr1or2AKO@2rkARKM@RAR@ANK2raar,SD2"
 
 def insertData(user_email,user_pnum,user_address,user_age,user_sex,user_family):
     # DB 연동 - 연결
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     sql = "insert into member (e_mail,phone_number,address,age,sex,family)\
                      values (%s,%s,%s,%s,%s,%s);"
@@ -52,18 +52,39 @@ def login_result():
 def member():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
     email = session['ID']
-
-    execute_str = 'select * from member where e_mail = "' + email + '"'
-
-    cursor.execute(execute_str)
-    member_data = cursor.fetchall()
+    
+    sql = "select * from member where e_mail=%s"
+    cursor.execute(sql, email)
+    member_data = cursor.fetchone()
 
     return render_template('member/member.html', member_data = member_data)
+    print(type(member_data))
+
+@app.route("/member/update", methods=['POST'])
+def member_update():
+    email = session['ID']
+    print('email====', email)
+    print(request.form)
+    update_pnum = request.form['phone']
+    update_address = request.form['address']
+    update_age = request.form['age']
+    update_sex = request.form['gender']
+    update_family = request.form['family']
+
+    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234',
+             db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    cursor = conn.cursor()
+    # e_mail, phone_number, address, age, sex, family
+    sql = "update member set phone_number=%s, address=%s, age =%s, sex =%s, family =%s where e_mail=%s"
+    cursor.execute(sql,(update_pnum, update_address, update_age, update_sex, update_family,email))
+    conn.commit()
+    conn.close()
+    return redirect('/search/')
 
 @app.route("/signup_com")
 def signup_com():
