@@ -89,3 +89,4 @@ def searchResult():
         }
     p_count = len(park_data)
     return render_template('search_result/search_result.html', address=str(address), addr_x=addr_x, addr_y=addr_y, park = park, p_count=p_count)
+

@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, session
 from controllers.search import search
 from controllers.details import details
+from controllers.datalab import datalab
 import pymysql
 
 # app 객체 생성
@@ -39,6 +40,7 @@ def signup_com():
 
 app.register_blueprint(search,url_prefix = '/search')
 app.register_blueprint(details,url_prefix = '/details')
+app.register_blueprint(datalab,url_prefix = '/datalab')
 
 # app 실행
 if __name__ == "__main__":
