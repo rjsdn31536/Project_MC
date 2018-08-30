@@ -24,7 +24,8 @@
     <link href="/static/datalab/css/resume.min.css" rel="stylesheet">
     <link href="/static/datalab/css/form.css" rel="stylesheet">
     <link href="/static/datalab/css/detaiList.css" rel="stylesheet">
-        
+    <!-- 차트 관련  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 
 
   </head>
@@ -62,17 +63,39 @@
     <div class="container-fluid p-0">
       <!-- 1. -->
       <section class="resume-section p-3 p-lg-5 d-flex d-column" id="about">
-        <ul id="aboutList" style="height:30%">
+        <ul id="aboutList" style="height:30%;padding:0">
           <li>
             <h2>
-              1. 
+              1. 시도별 공공주차장 현황 
             </h2>
           </li>
-          <li style="width:800px;">
-           
+          <li style="width:900px;">
+            <canvas id="sidochart"></canvas>
           </li>
         </ul>
-      
+        <script>
+          var ctx = document.getElementById("sidochart").getContext('2d');
+          var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: {{ sidolist |tojson }},
+                  datasets: [{
+                      label: '주차장 수',
+                      data: {{ sidocount |tojson }},
+                    borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }]
+                  }
+              }
+          });
+          </script>
       </section>
 
       <hr class="m-0">
@@ -81,6 +104,20 @@
         <div>
           <h2>2. </h2>
         </div>
+        <div>
+          <canvas id="marksChart" width="600" height="400"></canvas>
+        </div>
+      <script>
+      var marksCanvas = document.getElementById("marksChart");
+      var marksData = {
+          labels: {{ sidolist | tojson }},
+          datasets: {{ sidocount | tojson }}
+      };
+      var radarChart = new Chart(marksCanvas, {
+          type: 'radar',
+          data: marksData
+      });
+      </script>
 
 
       </section>
