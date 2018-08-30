@@ -11,7 +11,7 @@ app.secret_key = "e21lr1or2AKO@2rkARKM@RAR@ANK2raar,SD2"
 
 def insertData(user_email,user_pnum,user_address,user_age,user_sex,user_family):
     # DB 연동 - 연결
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     sql = "insert into member (e_mail,phone_number,address,age,sex,family)\
                      values (%s,%s,%s,%s,%s,%s);"
@@ -52,7 +52,7 @@ def login_result():
 def member():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                    password='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
