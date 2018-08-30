@@ -17,7 +17,7 @@ park = dict()
 def searchpage():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                    password='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -45,7 +45,7 @@ def searchpage():
 def searchResult():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb',charset='utf8')
+                    password='1234', db='pythondb1',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
 

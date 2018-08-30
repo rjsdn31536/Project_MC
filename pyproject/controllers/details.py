@@ -8,7 +8,7 @@ import re
 
 
 # db연동
-# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb', charset='utf8')
+# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb1', charset='utf8')
 
 
 details = Blueprint('details', __name__, template_folder='details')
@@ -28,10 +28,10 @@ def detailpage2(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                       password='1234', db='pythondb',charset='utf8')
+                       password='1234', db='pythondb1',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
-    execute_str = "select * from parkinglot where p_code = " + str(p_code_num)
+    execute_str = "select * from parkinglot where p_code = " + '"' + str(p_code_num) + '"'
 
     cursor.execute(execute_str)
 
@@ -73,7 +73,8 @@ def detailpage2(p_code):
 
     try:
         sql =  "select * from want where p_code = " + '"' + str(p_code_num) + '" and e_mail = "' + session['ID'] + '"'
-        cursor.execute(sql)
+        if cursor.execute(sql):
+            return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0])
         check_data= cursor.fetchall()
     except:
         return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0])
@@ -125,7 +126,7 @@ def park_date(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='1234', db='pythondb1',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     sql = "update want set go_date1=%s, go_date2=%s, go_date3=%s, go_date4=%s, go_date5=%s where e_mail = %s and p_code = %s"     
@@ -143,7 +144,7 @@ def likeside(p_code):
         
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='1234', db='pythondb1',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()
     email = session['ID']
@@ -160,7 +161,7 @@ def normalside(p_code):
         
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='1234', db='pythondb1',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
@@ -177,7 +178,7 @@ def hateside(p_code):
     hate = request.form['hate']
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='1234', db='pythondb1',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
