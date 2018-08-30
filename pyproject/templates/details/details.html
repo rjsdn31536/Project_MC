@@ -26,7 +26,6 @@
     <link href="/static/details/css/detaiList.css" rel="stylesheet">
     
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
-    
     <!-- 좋아요 버튼 -->
 
 
@@ -77,6 +76,10 @@
         font-size: 13px;
         color: #fff;
         line-height: 25px;
+    }
+    #svg {
+      width: 500px;
+      height: 500px;
     }
     </style>
 
@@ -137,27 +140,27 @@
                   </div>
               </div>
               
-                <span>누적수</span>
+                <span>누적수 : {{day_like2}}</span>
               </form>
             </div>
             <div>
                 <form action="/details/normal/{{p_code}}" method="POST">
                   <input type="hidden" name="normal" value="1">
                   <input type="submit" value="그냥 그래요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
-                  <span>누적수</span>
+                  <span>누적수 : {{day_like1}}</span>
                 </form>
-              </div>
             <div>
               <form action="/details/hate/{{p_code}}" method="POST">
                 <input type="hidden" name="hate" value="0">
                 <input type="submit" value="싫어요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
-                <span>누적수</span>
+                <span>누적수 : {{day_like0}}</span>
               </form>
             </div>
           </li>
         </ul>
       </div>
     </nav>
+
 
 
     <div class="container-fluid p-0">

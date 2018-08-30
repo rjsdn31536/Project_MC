@@ -12,7 +12,6 @@ def date_num(day, p_code):
     # 실행자 생성
     cursor = conn.cursor()   
 
-    # 좋아요, 보통이에요, 싫어요 데이터를 ( , , ) 튜플형태로 저장 및 템플릿에 보내기
     sql = 'select * from want where go_date' + str(day) + ' = 1 and p_code = ' + str(p_code) 
     cursor.execute(sql)
     data = cursor.fetchall()
@@ -20,6 +19,49 @@ def date_num(day, p_code):
     conn.close()
     
     return len(data)
+
+def like_num(p_code):
+    conn = pymysql.connect(host='127.0.0.1',user = 'root', password='1234', db='pythondb',charset='utf8')
+    # 실행자 생성
+    cursor = conn.cursor()   
+
+    sql = 'select * from want where go_like= 2 and p_code = ' + str(p_code) 
+    cursor.execute(sql)
+    data2 = cursor.fetchall()
+    
+    sql = 'select * from want where go_like= 1 and p_code = ' + str(p_code) 
+    cursor.execute(sql)
+    data1 = cursor.fetchall()
+    
+    sql = 'select * from want where go_like= 0 and p_code = ' + str(p_code) 
+    cursor.execute(sql)
+    data0 = cursor.fetchall()
+
+    data_sum = len(data2) + len(data1) + len(data0)
+    
+    like_data = [
+        {
+            'value' : (len(data2)*100/data_sum)+0.001,
+            'label': 'Like',
+            'color': '#3399FF'
+        },
+        {
+            'value' : (len(data1)*100/data_sum)+0.001,
+            'label': 'Soso',
+            'color': '#FFC575'
+        },
+        {
+            'value' : (len(data0)*100/data_sum)+0.001,
+            'label': 'Bad',
+            'color': '#99CC00'
+        },
+    ]
+
+    conn.close()
+
+    return like_data, len(data2), len(data1), len(data0)
+    
+    
 
 
 # db연동
@@ -102,17 +144,22 @@ def detailpage2(p_code):
             comment_str.append(comm[1])
             comment_len += 1
 
-    # 좋아요, 보통이에요, 싫어요 데이터를 ( , , ) 튜플형태로 저장 및 템플릿에 보내기
+    
+    # 가고싶은 날짜 데이터를 ( , , ) 튜플형태로 저장 및 템플릿에 보내기
     go_date = (date_num(1,p_code_num), date_num(2,p_code_num), 
                 date_num(3,p_code_num), date_num(4,p_code_num), date_num(5,p_code_num))
+
+    like_day, day_like2, day_like1, day_like0 = like_num(p_code_num)
 
     try:
         sql =  "select * from want where p_code = " + '"' + str(p_code_num) + '" and e_mail = "' + session['ID'] + '"'
         if cursor.execute(sql):
-            return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date)
+            return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date, 
+            like_data = like_day, day_like2 = day_like2, day_like1 = day_like1, day_like0 = day_like0)
         check_data= cursor.fetchall()
     except:
-        return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date)
+        return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date, 
+        like_data = like_day, day_like2 = day_like2, day_like1 = day_like1, day_like0 = day_like0)
 
 
     if check_data == ():
@@ -123,7 +170,8 @@ def detailpage2(p_code):
 
     conn.commit()
     return render_template('details/details.html', 
-                        park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date)
+                        park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date, 
+                        like_data = like_day, day_like2 = day_like2, day_like1 = day_like1, day_like0 = day_like0)
 
 # get과 post방식 둘다 사용하기 get 화면 post 가고싶어요 받기
 @details.route("/date/<p_code>", methods=['POST'])
