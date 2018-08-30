@@ -27,7 +27,16 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link href="/static/search_result/css/left_side_menu.css" rel="stylesheet">
   <link href="/static/search_result/css/mapdiv.css" rel="stylesheet">
-  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script></head>
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
+  <style>
+  a:link {color:black;border:none}
+  a:visited {color:black;border:none}
+  a:hover {color:green}
+  a:active {color:green}
+  
+  </style>
+
+</head>
 
 <body id="page-top">
 
@@ -38,16 +47,36 @@
   <nav id="sidebar-wrapper">
     <ul class="sidebar-nav">
       <li class="sidebar-brand">
-        <a class="js-scroll-trigger" href="#page- top">"아이디" 님</a>
+        <a class="js-scroll-trigger" href="#page-top">{{session['ID']}} 님</a>
+      </li>
+      <li class="sidebar-nav-item" style="margin-top:5px;margin-left:5px">
+          <a class="js-scroll-trigger" href="#" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
+      </li>
+      <li class="sidebar-nav-item" style="margin-top:10px">
+        <a class="js-scroll-trigger" href="/member">정보수정</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-folder"></i>
+          <span style="color:white">검색내역</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="width:100%;overflow:auto;height:450px;">
+          <ul style="padding:0;border-bottom:1px solid black;text-align:center ">
+              <li style="display:block">내역 : {{park_want_len}}건 </li>
+            </ul>
+            <ul class='dropdownList'>
+              {% for i in range(park_want_len) %}
+              <a href="http://127.0.0.1:5000/details/{{park_code_list[i]}}" target="_blank" style="color:black">
+                <li>
+                  <h3 style="text-align:center">{{park_want_list[i]}}</h3>
+                </li>
+              </a>
+              {% endfor %}
+          </ul>  
+        </div>
       </li>
       <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="#page-top">프로필</a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="#about">정보수정</a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="#services">검색내역</a>
+          <a class="js-scroll-trigger" href="http://127.0.0.1:5000/datalab">데이터 Lab</a>
       </li>
     </ul>
   </nav>
@@ -58,20 +87,27 @@
       <button type="submit"></button>
     </form>
   </div>
+
   <!-- left side menu -->
   <div class="leftside">
     <div style="overflow:auto;height:100%">
-      <ul> 
+      <ul style="padding:0;border-bottom:1px solid black">
+        <li style="display:block">검색 결과 : {{ p_count }}건 </li>
+      </ul>
+      <ul style="padding:0">
       {% for i in park.keys() %}
-          <li>
-            <h3>{{park[i]['p_name']}}</h3>
-            <p>{{park[i]['p_address']}}</p>
+        <a href="http://127.0.0.1:5000/details/{{i}}" target="_blank">
+          <li style="display:block">
+              <h3>{{park[i]['p_name']}}</h3>
+              <p >{{park[i]['p_address']}}</p>
           </li>
+        </a>
       {% endfor %} 
       </ul>
     </div>
 
   </div>
+
   <!-- map div -->
   <div class="mapdiv">
     <div id="map" style="width:100%;height:100%;"></div>
@@ -143,6 +179,7 @@
             '주차장 유형 : ' + park[key]['p_type'] + ' <br />',
             '관리기관 : ' + park[key]['p_admit'] + ' <br />',
             '   </p>',
+            '<a href="http://127.0.0.1:5000/details/'+key+'" target="_blank" >상세보기</a>',
             '</div>'
           ].join('');
           var infoWindow = new naver.maps.InfoWindow({
@@ -187,7 +224,7 @@
           marker.setMap(null);
       }
 
-      // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+      // // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
       function getClickHandler(seq) {
           return function(e) {
               var marker = markers[seq],
@@ -203,13 +240,15 @@
 
       for (var i=0, ii=markers.length; i<ii; i++) {
           naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+          
       }
-      ///////////////
+      
 
     </script>
   </div>
 
 
+    
 
   <!-- Bootstrap core JavaScript -->
   <script src="/static/search/vendor/jquery/jquery.min.js"></script>

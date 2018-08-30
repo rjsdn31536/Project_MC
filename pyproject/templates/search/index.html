@@ -24,6 +24,8 @@
     <!-- search box CSS -->
     <link href="/static/search/css/searchbox.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- navmodal CSS -->
+    <link rel="stylesheet" href="/static/search/css/navmodal.css">
 
   </head>
 
@@ -36,16 +38,36 @@
     <nav id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a class="js-scroll-trigger" href="#page- top">"아이디" 님</a>
+          <a class="js-scroll-trigger" href="#page-top">{{session['ID']}} 님</a>
+        </li>
+        <li class="sidebar-nav-item" style="margin-top:5px;margin-left:5px">
+            <a class="js-scroll-trigger" href="#" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
+        </li>
+        <li class="sidebar-nav-item" style="margin-top:10px">
+          <a class="js-scroll-trigger" href="/member">정보수정</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span style="color:white">검색내역</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="width:100%;overflow:auto;height:450px;">
+            <ul style="padding:0;border-bottom:1px solid black;text-align:center ">
+              <li style="display:block">내역 : {{park_want_len}}건 </li>
+            </ul>
+            <ul class='dropdownList'>
+              {% for i in range(park_want_len) %}
+              <a href="http://127.0.0.1:5000/details/{{park_code_list[i]}}" target="_blank" style="color:black">
+                <li>
+                  <h3 style="text-align:center">{{park_want_list[i]}}</h3>
+                </li>
+              </a>
+              {% endfor %}
+            </ul>  
+          </div>
         </li>
         <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="#page-top">프로필</a>
-        </li>
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="#about">정보수정</a>
-        </li>
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="#services">검색내역</a>
+            <a class="js-scroll-trigger" href="http://127.0.0.1:5000/datalab">데이터 Lab</a>
         </li>
       </ul>
     </nav>
@@ -53,9 +75,9 @@
     <!-- Header -->
     <header class="masthead d-flex">
       <div class="container text-center my-auto">
-        <h1 class="mb-1" style="color:wheat">공공주차장 검색</h1>
-        <h3 class="mb-5">
-          <em style="color:whitesmoke;fon">주소 및 주자창 이름을 검색해보세요</em>
+        <h1 class="mb-1" style="color:white;font-size:100px">공공주차장 검색</h1> <br>
+        <h2 class="mb-5">
+          <em style="color:#FFFF96;font-weight:200;font-size:60px">당신의 차가 있을 곳은?</em>
         </h3>
         <div class="searchbox">
         <!-- POST 사용으로 address에 input 값을 넣어줌 -->
@@ -76,6 +98,7 @@
     <!-- Bootstrap core JavaScript -->
     <script src="/static/search/vendor/jquery/jquery.min.js"></script>
     <script src="/static/search/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
     <!-- Plugin JavaScript -->
     <script src="/static/search/vendor/jquery-easing/jquery.easing.min.js"></script>

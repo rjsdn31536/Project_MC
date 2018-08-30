@@ -26,8 +26,62 @@
     <link href="/static/details/css/detaiList.css" rel="stylesheet">
     
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
-    
     <!-- 좋아요 버튼 -->
+
+
+    <style>
+      .layer-wrap {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .layer-wrap:before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -.25em;
+    }
+    .pop-layer {
+        display: inline-block;
+        vertical-align: middle;
+        width: 500px;
+        height: auto;
+        background-color: #fff;
+        border: 5px solid #3571B5;
+        z-index: 10;
+        font-family:Tahoma;
+    }
+    .pop-layer .pop-container {
+        padding: 20px 25px;
+    }
+    .pop-layer .btn-r {
+        width: 100%;
+        margin: 10px 0 20px;
+        padding-top: 10px;
+        border-top: 1px solid #DDD;
+        text-align: right;
+    }
+    a.btn-layerClose {
+        display: inline-block;
+        height: 25px;
+        padding: 0 14px 0;
+        border: 1px solid #304a8a;
+        background-color: #3f5a9d;
+        font-size: 13px;
+        color: #fff;
+        line-height: 25px;
+    }
+    #svg {
+      width: 500px;
+      height: 500px;
+    }
+    </style>
 
   </head>
 
@@ -36,7 +90,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-none d-lg-block">
-          <h3>'주차장' 명</h3>
+          <h3>{{park[p_num]['p_name']}}</h3>
         </span>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,27 +99,61 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#about">상세정보</a>
+            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#about">상세정보</a>
           </li>
           <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#experience">가고싶어요</a>
+            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#experience">개방 날짜</a>
           </li>
           <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#education">한줄평</a>
+            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#education">한줄평</a>
           </li>
           <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;" class="nav-link js-scroll-trigger" href="#skills">누가 여기 올까요?</a>
+            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#skills">이용자 분석</a>
           </li>
           <li class="nav-item" style="margin-top:20px">
             <h5>만족도 조사</h5>
             <div>
-              <form action="/">
-                <input type="button" value="좋아요" name="like"> 좋아요 갯수
+              <form action="/details/like/{{p_code}}" method="POST">
+                <!-- hidden은 여기서 사용자에게 보이지 않는 값을 의미한다 -->
+                <a href="#layer" class="btn-layer">
+                  <input type="hidden" name="like" value="2">
+                  <input type="submit" value="좋아요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
+                </a>
+                <div id="layer" class="layer-wrap">
+                  <div class="pop-layer">
+                      <div class="pop-container">
+                          <div class="pop-conts">
+                              <!--content //-->
+                              <p class="ctxt mb20">
+                                  Thank you.<br> 
+                                  Your registration was submitted successfully.<br> 
+                                  Selected invitees will be notified by e-mail on JANUARY 24th.<br><br> 
+                                  Hope to see you soon!
+                              </p>
+              
+                              <div class="btn-r">
+                                  <a href="#" class="btn-layerClose">Close</a>
+                              </div>
+                              <!--// content-->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+                <span>누적수 : {{day_like2}}</span>
               </form>
             </div>
             <div>
-              <form action="/">
-                <input type="button" value="싫어요" name="dislike"> 싫아요 갯수
+                <form action="/details/normal/{{p_code}}" method="POST">
+                  <input type="hidden" name="normal" value="1">
+                  <input type="submit" value="그냥 그래요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
+                  <span>누적수 : {{day_like1}}</span>
+                </form>
+            <div>
+              <form action="/details/hate/{{p_code}}" method="POST">
+                <input type="hidden" name="hate" value="0">
+                <input type="submit" value="싫어요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
+                <span>누적수 : {{day_like0}}</span>
               </form>
             </div>
           </li>
@@ -74,42 +162,53 @@
     </nav>
 
 
+
     <div class="container-fluid p-0">
       <!-- 상세정보 -->
       <section class="resume-section p-3 p-lg-5 d-flex d-column" id="about">
         <ul id="aboutList" style="height:30%">
           <li>
             <h2>
-              '주차장' 명
+              {{park[p_num]['p_name']}}
             </h2>
         </li>
           <li>
             <h5>
-              유형 : 'db 연동'
+              유 형 - {{park[p_num]['p_type']}}
             </h5>
           </li>
           <li >
-            <h3>
-              주소 : 'db 연동'
-            </h3>
+            <h5>
+              주 소 - {{park[p_num]['p_address']}}
+            </h5>
           </li>
           <li >
             <h5>
-              번호 : 'db연동''
+              번 호 - {{park[p_num]['p_number']}}
+            </h5>
+          </li>
+          <li >
+            <h5>
+              관리기관 - {{park[p_num]['p_admit']}}
+            </h5>
+          </li>
+          <li >
+            <h5>
+              특이사항 - {{park[p_num]['p_desp']}}
             </h5>
           </li>
           <li style="width:800px;">
            <div id="map" style="width:100%;height:400px;"></div>
            <!-- 주차장에 따른 위경도 값을 가져와서 하단의 LatLng에 대입 -->
            <script>
-             // db로 addr 받아오면 될듯!
-              var addr = [{
-                Lat: {{addr_x}} ,
-                Lng: {{addr_y}}
-              }];
+           
+            var park = {{ park|tojson }}
+            
+            // 마커를 표시하기 위하여 마커(위도,경도) 저장
+              var addr = [{{park[p_num]['p_lat']}}, {{park[p_num]['p_long']}}]
  
               var map = new naver.maps.Map('map', {
-                      center: new naver.maps.LatLng(addr[0].Lat,addr[0].Lng),
+                      center: new naver.maps.LatLng(addr[0],addr[1]),
                       scaleControl: false,
                       logoControl: false,
                       mapDataControl: false,
@@ -122,7 +221,7 @@
                     });
 
               var markers = new naver.maps.Marker({
-                position: new naver.maps.LatLng(addr[0].Lat,addr[0].Lng),
+                position: new naver.maps.LatLng(addr[0],addr[1]),
                 map: map
               });
            </script>
@@ -142,18 +241,27 @@
           <h3>원하는 날짜를 선택하여 저장하세요</h3>
         </div>
         <div id="formBox">
-          <form action="#">
-            {% for i in dateList %}
-            <input type="checkbox"  name="날짜 선택"><label>{{ i }}</label> <br>
-            {% endfor %}
+          <form action="/details/date/{{p_code}}" method='POST'>
+            <input type="checkbox"  name="checkdate" value="date1"><label>14일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date2"><label>15일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date3"><label>16일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date4"><label>17일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date5"><label>18일</label> <br>
             <input class="subMit" type="submit" value="저장">
             <input class="canCel" type="reset" value="취소">
-          </form> 
+          </form>
       </div>
       <div>
-        <h4>특이사항</h4>
+        <br>
+        <br>
+        <br>
+        <h2>개방 시간</h2>
         <p>
-          db 연동
+          <li>14일 : {{ park[p_num]['p_date1'] }} <br></li>
+          <li>15일 : {{ park[p_num]['p_date2'] }} <br></li>
+          <li>16일 : {{ park[p_num]['p_date3'] }} <br></li>
+          <li>17일 : {{ park[p_num]['p_date4'] }} <br></li>
+          <li>18일 : {{ park[p_num]['p_date5'] }} <br></li>
         </p>
       </div>
 
@@ -171,13 +279,37 @@
               <h3>장소에 대해 평가해주세요</h3>
             </li>
           </ul>
-          <div style="float:left">
-              <textarea id="ment" name="ment" row="1" cols="1" rows="1" class="input_tx" maxlength="140" style="margin: 0px; height: 60px; width: 500px;"></textarea>
-              <p class="tx_length"><em id="ment_cnt">0</em>/140</p>
-            </div>
-            <div style="float:left;">
+          <form action='/details/comment/{{p_code}}' method='POST'>
+            <div style="float:left">
+              <textarea id="contentHelp" style="width:500px;height:60px;" name="comment"></textarea>
+              <div class="remaining"> 남은 글자수: <span class="count">50</span>
+              </div>
+              </div>
+            <div style="float:left;">    
               <input type="image" id="pointAddButton" src="https://ssl.pstatic.net/static/movie/2012/06/score_btn_submit.png" alt="등록" style="height:60px">
-            </div>  
+            </div>
+          </form>
+        </div>
+        <div style="overflow:auto;height:600px;width:850px;border-top:2px solid black;border-bottom:2px solid black;">
+          <ol>
+          {% if comment_len != 0 %}
+            {% for i in range(comment_len) %}
+              <li style="height:48px">
+                <p>
+                 {{comment_str[i]}}<br>
+                                                   ┗ {{comment_email[i]}}
+                <hr>
+                </p> 
+              </li>
+            {% endfor %}
+          {% else %}
+            <li style="height:48px">
+                <p>
+                한줄평이 없습니다! 첫 한줄평의 주인공이 되어주세요!
+                </p> <hr>
+              </li>
+          {% endif%}
+          </ol>
         </div>
         
 
@@ -199,6 +331,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript -->
+
     <script src="/static/details/vendor/jquery/jquery.min.js"></script>
     <script src="/static/details/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -207,6 +340,16 @@
 
     <!-- Custom scripts for this template -->
     <script src="/static/details/js/resume.min.js"></script>
+    <script src="/static/details/vendor/jquery/jquery.count.js"></script>
+    <script>
+      $('.btn-layer').on('click', function() {
+        var target = $(this).attr('href');
+        $(target).fadeIn();
+     });
+     $('.btn-layerClose').on('click', function() {
+        $('.layer-wrap').fadeOut();
+     });
+    </script>
   </body>
 
 </html>

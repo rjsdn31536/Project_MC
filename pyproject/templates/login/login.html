@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>공공주차장 서비스</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="/static/login/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom Fonts -->
+  <link href="/static/login/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
+  <link href="/static/login/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="/static/login/css/stylish-portfolio.min.css" rel="stylesheet">
+  
+  <link href="/static/login/css/login.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <section class="container">
+    <article class="half">
+      <h1 style="font-size:30px">공공주차장 서비스</h1>
+      <div class="tabs" style="font-size:20px">
+        <span class="tab signin active"><a href="/">로그인</a></span>
+        <span class="tab signup"><a href="/">회원가입</a></span>
+      </div>
+      <div class="content">
+        <div class="signin-cont cont">
+          <form action="/search/" method="POST">
+            <input type="email" name="email" id="email" class="inpt" required="required" placeholder="E-mail">
+            <label for="email">E-mail</label>
+            <input type="checkbox" id="remember" class="checkbox" checked>
+            <label for="remember">E-mail 기억하기</label>
+            <div class="submit-wrap">
+              <input type="submit" value="로그인" class="submit">
+            </a>
+            </div>
+          </form>
+        </div>
+        <div class="signup-cont cont">
+          <form action="/login_result" method="POST">
+            <input type="email" name="email" id="email" class="inpt" required="required" placeholder="E-mail">
+            <label for="email">E-mail</label>
+            <input type="phone" name="phone" id="phone" class="inpt" required="required" placeholder="전화번호">
+            <label for="phone">전화번호</label>
+            <input type="address" name="address" id="address" class="inpt" required="required" placeholder="주소 (OO도 OO시 OO구로 입력)">
+            <label for="address">주소</label>
+            <input type="age" name="age" id="age" class="inpt" required="required" placeholder="나이">
+            <label for="age">나이</label>
+            <input type="gender" name="gender" id="gender" class="inpt" required="required" placeholder="성별 (남자는 M,여자는 W으로 입력)">
+            <label for="gender">성별</label>
+            <input type="family" name="family" id="family" class="inpt" required="required" placeholder="인원 수">
+            <label for="family">인원 수</label>
+            <div class="submit-wrap">
+                  <input type="submit" value="회원가입하기" class="submit">
+            </div>
+          </form>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="/static/login/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/login/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="/static/login/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="/static/login/js/stylish-portfolio.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script type="text/javascript">
+    $('.tabs .tab').click(function () {
+      if ($(this).hasClass('signin')) {
+        $('.tabs .tab').removeClass('active');
+        $(this).addClass('active');
+        $('.cont').hide();
+        $('.signin-cont').show();
+      }
+      if ($(this).hasClass('signup')) {
+        $('.tabs .tab').removeClass('active');
+        $(this).addClass('active');
+        $('.cont').hide();
+        $('.signup-cont').show();
+      }
+    });
+  </script>
+</body>
+
+</html>
