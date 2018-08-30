@@ -106,9 +106,35 @@ def member_update():
     # e_mail, phone_number, address, age, sex, family
     sql = "update member set phone_number=%s, address=%s, age =%s, sex =%s, family =%s where e_mail=%s"
     cursor.execute(sql,(update_pnum, update_address, update_age, update_sex, update_family,email))
+    
+     # 검색 내역 데이터를 넘겨주기 위하여 DB에서 검색
+    # 실행자 생성
+    cursor = conn.cursor()   
+
+    execute_str = 'select p_code from want where e_mail = "' + email + '"'
+    cursor.execute(execute_str) 
+    park_data = cursor.fetchall()
+    # want list는 e_mail 사용자가 방문했던 주차장 이름
+    park_want_list = list()
+        
+    # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
+    park_code_list = list()
+
+    for park_code in park_data:
+        execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
+        cursor.execute(execute_str) 
+        park_name = cursor.fetchall()
+        park_want_list.append(park_name[0]['p_name'])
+        park_code_list.append(park_code['p_code'])
+
+    sql = "select * from member where e_mail=%s"
+    cursor.execute(sql, email)
+    member_data = cursor.fetchone()
+
     conn.commit()
-    conn.close()
-    return redirect('/search/')
+
+    return render_template('search/index.html', member_data=member_data,
+            park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
 
 @app.route("/signup_com")
 def signup_com():
