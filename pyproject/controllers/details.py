@@ -41,17 +41,17 @@ def like_num(p_code):
     
     like_data = [
         {
-            'value' : (len(data2)*100/data_sum)+0.001,
+            'value' : len(data2),
             'label': 'Like',
             'color': '#3399FF'
         },
         {
-            'value' : (len(data1)*100/data_sum)+0.001,
+            'value' : len(data1),
             'label': 'Soso',
             'color': '#FFC575'
         },
         {
-            'value' : (len(data0)*100/data_sum)+0.001,
+            'value' : len(data0),
             'label': 'Bad',
             'color': '#99CC00'
         },
