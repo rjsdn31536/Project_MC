@@ -73,11 +73,11 @@ def detailpage2(p_code):
 
     try:
         sql =  "select * from want where p_code = " + '"' + str(p_code_num) + '" and e_mail = "' + session['ID'] + '"'
+        cursor.execute(sql)
+        check_data= cursor.fetchall()
     except:
         return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0])
 
-    cursor.execute(sql)
-    check_data= cursor.fetchall()
 
     if check_data == ():
         sql = "insert into want(e_mail, p_code) values(%s, %s)"        
