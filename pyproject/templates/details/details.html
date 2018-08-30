@@ -200,12 +200,12 @@
             </li>
           </ul>
           <div style="float:left">
-            <textarea id="contentHelp" style="width:500px;height:60px;"></textarea>
+            <textarea id="contentHelp" style="width:500px;height:60px;" name="comment"></textarea>
             <div class="remaining"> 남은 글자수: <span class="count">50</span>
             </div>
             </div>
             <div style="float:left;">
-              <form action="#">
+              <form action="/details/comment/{{p_code}}" method='POST'>
               <input type="image" id="pointAddButton" src="https://ssl.pstatic.net/static/movie/2012/06/score_btn_submit.png" alt="등록" style="height:60px">
               </form>  
             </div>  
