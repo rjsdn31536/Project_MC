@@ -59,13 +59,22 @@
           <li class="nav-item" style="margin-top:20px">
             <h5>만족도 조사</h5>
             <div>
-              <form action="/">
-                <input type="button" value="좋아요" name="like"> 좋아요 갯수
+              <form action="/details/like/{{p_code}}" method="POST">
+                <!-- hidden은 여기서 사용자에게 보이지 않는 값을 의미한다 -->
+                <input type="hidden" name="like" value="2">
+                <input type="submit" value="like"> 좋아요 갯수
               </form>
             </div>
             <div>
-              <form action="/">
-                <input type="button" value="싫어요" name="dislike"> 싫아요 갯수
+                <form action="/details/normal/{{p_code}}" method="POST">
+                  <input type="hidden" name="normal" value="1">
+                  <input type="submit" value="normal"> 보통이요 갯수
+                </form>
+              </div>
+            <div>
+              <form action="/details/hate/{{p_code}}" method="POST">
+                <input type="hidden" name="hate" value="0">
+                <input type="submit" value="hate"> 싫어요 갯수
               </form>
             </div>
           </li>
@@ -152,13 +161,15 @@
           <h3>원하는 날짜를 선택하여 저장하세요</h3>
         </div>
         <div id="formBox">
-          <form action="#">
-            {% for i in ['14일', '15일', '16일', '17일', '18일'] %}
-            <input type="checkbox"  name="날짜 선택"><label> {{ i }} </label><br>
-            {% endfor %}
+          <form action="/details/date/{{p_code}}" method='POST'>
+            <input type="checkbox"  name="checkdate" value="date1"><label>14일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date2"><label>15일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date3"><label>16일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date4"><label>17일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date5"><label>18일</label> <br>
             <input class="subMit" type="submit" value="저장">
             <input class="canCel" type="reset" value="취소">
-          </form> 
+          </form>
       </div>
       <div>
         <br>

@@ -38,16 +38,13 @@
     <nav id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a class="js-scroll-trigger" href="#page- top">"아이디" 님</a>
+          <a class="js-scroll-trigger" href="#page-top">{{session['ID']}} 님</a>
         </li>
         <li class="sidebar-nav-item" style="margin-top:5px;margin-left:5px">
             <a class="js-scroll-trigger" href="#" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
         </li>
         <li class="sidebar-nav-item" style="margin-top:10px">
           <a class="js-scroll-trigger" href="#about">정보수정</a>
-        </li>
-        <li class="sidebar-nav-item">
-            <a class="js-scroll-trigger" href="#about">데이터 Lab</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,6 +66,9 @@
               {% endfor %}
             </ul>  
           </div>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="#about">데이터 Lab</a>
         </li>
       </ul>
     </nav>
