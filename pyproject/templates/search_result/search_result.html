@@ -53,7 +53,7 @@
           <a class="js-scroll-trigger" href="#" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
       </li>
       <li class="sidebar-nav-item" style="margin-top:10px">
-        <a class="js-scroll-trigger" href="#about">정보수정</a>
+        <a class="js-scroll-trigger" href="/member">정보수정</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,17 +62,16 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="width:100%;overflow:auto;height:450px;">
           <ul style="padding:0;border-bottom:1px solid black;text-align:center ">
-            <li style="display:block">내역 : ??건 </li>
-          </ul>
-          <ul class='dropdownList'>
-            {% for i in range(1,10) %}
-            <a href="http://127.0.0.1:5000/details/" target="_blank" style="color:black">
-              <li>
-                <h4>주차장 명</h4>
-                <p>선택한 날짜 간략하게</p><hr>
-              </li>
-            </a>
-            {% endfor %}
+              <li style="display:block">내역 : {{park_want_len}}건 </li>
+            </ul>
+            <ul class='dropdownList'>
+              {% for i in range(park_want_len) %}
+              <a href="http://127.0.0.1:5000/details/{{park_code_list[i]}}" target="_blank" style="color:black">
+                <li>
+                  <h3 style="text-align:center">{{park_want_list[i]}}</h3>
+                </li>
+              </a>
+              {% endfor %}
           </ul>  
         </div>
       </li>

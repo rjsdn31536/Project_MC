@@ -6,9 +6,24 @@ import pandas as pd
 # 문자열에서 숫자만 추출하는 모듈
 import re
 
+# date_num(1, p_code) 을 입력하면 want DB에서의 go_date1을 검색하여 가고싶은 사람의 개수를 return한다.
+def date_num(day, p_code):
+    conn = pymysql.connect(host='127.0.0.1',user = 'root', password='1234', db='pythondb',charset='utf8')
+    # 실행자 생성
+    cursor = conn.cursor()   
+
+    # 좋아요, 보통이에요, 싫어요 데이터를 ( , , ) 튜플형태로 저장 및 템플릿에 보내기
+    sql = 'select * from want where go_date' + str(day) + ' = 1 and p_code = ' + str(p_code) 
+    cursor.execute(sql)
+    data = cursor.fetchall()
+
+    conn.close()
+    
+    return len(data)
+
 
 # db연동
-# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb1', charset='utf8')
+# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb', charset='utf8')
 
 
 details = Blueprint('details', __name__, template_folder='details')
@@ -28,7 +43,7 @@ def detailpage2(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                       password='1234', db='pythondb1',charset='utf8')
+                       password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     execute_str = "select * from parkinglot where p_code = " + '"' + str(p_code_num) + '"'
@@ -87,14 +102,17 @@ def detailpage2(p_code):
             comment_str.append(comm[1])
             comment_len += 1
 
+    # 좋아요, 보통이에요, 싫어요 데이터를 ( , , ) 튜플형태로 저장 및 템플릿에 보내기
+    go_date = (date_num(1,p_code_num), date_num(2,p_code_num), 
+                date_num(3,p_code_num), date_num(4,p_code_num), date_num(5,p_code_num))
 
     try:
         sql =  "select * from want where p_code = " + '"' + str(p_code_num) + '" and e_mail = "' + session['ID'] + '"'
         if cursor.execute(sql):
-            return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len)
+            return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date)
         check_data= cursor.fetchall()
     except:
-        return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len)
+        return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date)
 
 
     if check_data == ():
@@ -105,7 +123,7 @@ def detailpage2(p_code):
 
     conn.commit()
     return render_template('details/details.html', 
-                        park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len)
+                        park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len, go_date = go_date)
 
 # get과 post방식 둘다 사용하기 get 화면 post 가고싶어요 받기
 @details.route("/date/<p_code>", methods=['POST'])
@@ -130,7 +148,7 @@ def park_date(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb1',charset='utf8')
+            password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     sql = "update want set go_date1=%s, go_date2=%s, go_date3=%s, go_date4=%s, go_date5=%s where e_mail = %s and p_code = %s"     
@@ -148,7 +166,7 @@ def likeside(p_code):
         
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb1',charset='utf8')
+            password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()
     email = session['ID']
@@ -165,7 +183,7 @@ def normalside(p_code):
         
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb1',charset='utf8')
+            password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
@@ -182,7 +200,7 @@ def hateside(p_code):
     hate = request.form['hate']
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb1',charset='utf8')
+            password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
@@ -197,7 +215,7 @@ def hateside(p_code):
 def comment(p_code):    
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb1',charset='utf8')
+            password='1234', db='pythondb',charset='utf8')
 
     comment_str= request.form['comment']
     

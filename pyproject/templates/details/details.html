@@ -29,6 +29,57 @@
     
     <!-- 좋아요 버튼 -->
 
+
+    <style>
+      .layer-wrap {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .layer-wrap:before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -.25em;
+    }
+    .pop-layer {
+        display: inline-block;
+        vertical-align: middle;
+        width: 500px;
+        height: auto;
+        background-color: #fff;
+        border: 5px solid #3571B5;
+        z-index: 10;
+        font-family:Tahoma;
+    }
+    .pop-layer .pop-container {
+        padding: 20px 25px;
+    }
+    .pop-layer .btn-r {
+        width: 100%;
+        margin: 10px 0 20px;
+        padding-top: 10px;
+        border-top: 1px solid #DDD;
+        text-align: right;
+    }
+    a.btn-layerClose {
+        display: inline-block;
+        height: 25px;
+        padding: 0 14px 0;
+        border: 1px solid #304a8a;
+        background-color: #3f5a9d;
+        font-size: 13px;
+        color: #fff;
+        line-height: 25px;
+    }
+    </style>
+
   </head>
 
   <body id="page-top">
@@ -61,8 +112,31 @@
             <div>
               <form action="/details/like/{{p_code}}" method="POST">
                 <!-- hidden은 여기서 사용자에게 보이지 않는 값을 의미한다 -->
-                <input type="hidden" name="like" value="2">
-                <input type="submit" value="좋아요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
+                <a href="#layer" class="btn-layer">
+                  <input type="hidden" name="like" value="2">
+                  <input type="submit" value="좋아요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
+                </a>
+                <div id="layer" class="layer-wrap">
+                  <div class="pop-layer">
+                      <div class="pop-container">
+                          <div class="pop-conts">
+                              <!--content //-->
+                              <p class="ctxt mb20">
+                                  Thank you.<br> 
+                                  Your registration was submitted successfully.<br> 
+                                  Selected invitees will be notified by e-mail on JANUARY 24th.<br><br> 
+                                  Hope to see you soon!
+                              </p>
+              
+                              <div class="btn-r">
+                                  <a href="#" class="btn-layerClose">Close</a>
+                              </div>
+                              <!--// content-->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
                 <span>누적수</span>
               </form>
             </div>
@@ -264,6 +338,15 @@
     <!-- Custom scripts for this template -->
     <script src="/static/details/js/resume.min.js"></script>
     <script src="/static/details/vendor/jquery/jquery.count.js"></script>
+    <script>
+      $('.btn-layer').on('click', function() {
+        var target = $(this).attr('href');
+        $(target).fadeIn();
+     });
+     $('.btn-layerClose').on('click', function() {
+        $('.layer-wrap').fadeOut();
+     });
+    </script>
   </body>
 
 </html>

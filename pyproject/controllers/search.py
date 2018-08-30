@@ -17,7 +17,7 @@ park = dict()
 def searchpage():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -39,13 +39,31 @@ def searchpage():
     # 로그인에 성공한 경우
     else:
         session['ID'] = e_mail
-        return render_template('search/index.html', member_data=member_data)
+        
+        execute_str = 'select p_code from want where e_mail = "' + e_mail + '"'
+        cursor.execute(execute_str) 
+        park_data = cursor.fetchall()
+        # want list는 e_mail 사용자가 방문했던 주차장 이름
+        park_want_list = list()
+        
+        # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
+        park_code_list = list()
+
+        for park_code in park_data:
+            execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
+            cursor.execute(execute_str) 
+            park_name = cursor.fetchall()
+            park_want_list.append(park_name[0]['p_name'])
+            park_code_list.append(park_code['p_code'])
+        
+        return render_template('search/index.html', member_data=member_data, 
+                    park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
 
 @search.route("/result/", methods=['POST'])
 def searchResult():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb1',charset='utf8')
+                    password='1234', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -88,5 +106,34 @@ def searchResult():
             'p_date5' : i[14]
         }
     p_count = len(park_data)
-    return render_template('search_result/search_result.html', address=str(address), addr_x=addr_x, addr_y=addr_y, park = park, p_count=p_count)
+
+    conn.close()
+
+    conn = pymysql.connect(host='127.0.0.1',user = 'root',
+                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    # 실행자 생성
+    cursor = conn.cursor()   
+        
+    execute_str = 'select p_code from want where e_mail = "' + session['ID'] + '"'
+    cursor.execute(execute_str) 
+    park_data = cursor.fetchall()
+    # want list는 e_mail 사용자가 방문했던 주차장 이름
+    park_want_list = list()
+        
+    # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
+    park_code_list = list()
+
+    for park_code in park_data:
+        execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
+        cursor.execute(execute_str) 
+        park_name = cursor.fetchall()
+        park_want_list.append(park_name[0]['p_name'])
+        park_code_list.append(park_code['p_code'])
+    
+    conn.close()
+
+
+    return render_template('search_result/search_result.html', 
+            address=str(address), addr_x=addr_x, addr_y=addr_y, park = park, p_count=p_count,
+            park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
 
