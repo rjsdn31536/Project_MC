@@ -200,25 +200,35 @@
             </li>
           </ul>
           <div style="float:left">
-            <textarea id="contentHelp" style="width:500px;height:60px;" name="comment"></textarea>
+            <textarea id="contentHelp" style="width:500px;height:60px;"></textarea>
             <div class="remaining"> 남은 글자수: <span class="count">50</span>
             </div>
             </div>
             <div style="float:left;">
               <form action="/details/comment/{{p_code}}" method='POST'>
-              <input type="image" id="pointAddButton" src="https://ssl.pstatic.net/static/movie/2012/06/score_btn_submit.png" alt="등록" style="height:60px">
+              <input type="image" id="pointAddButton" name="comment" src="https://ssl.pstatic.net/static/movie/2012/06/score_btn_submit.png" alt="등록" style="height:60px">
               </form>  
             </div>  
         </div>
         <div style="overflow:auto;height:600px;width:850px;border-top:2px solid black;border-bottom:2px solid black;">
           <ol>
-          {% for i in range(1,100) %}
+          {% if comment_len != 0 %}
+            {% for i in range(0, comment_len) %}
+              <li style="height:48px">
+                <p>
+                {{comment_str[i]}}<br>
+                                                    ┗ {{comment_email[i]}}
+                <hr>
+                </p> 
+              </li>
+            {% endfor %}
+          {% else %}
             <li style="height:48px">
-              <p>
-              한줄평 리스트  
-              </p> <hr>
-            </li>
-          {% endfor %}
+                <p>
+                한줄평이 없습니다! 첫 한줄평의 주인공이 되어주세요!
+                </p> <hr>
+              </li>
+          {% endif%}
           </ol>
         </div>
         

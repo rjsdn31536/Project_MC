@@ -84,8 +84,23 @@ def detailpage2(p_code):
         data = (session['ID'], p_code_num)
         cursor.execute(sql,data)
 
+    # 한줄평 데이터 받아오기
+    sql = "select e_mail, go_comment from want where p_code = " + str(p_code_num)
+    cursor.execute(sql)
+    comment_data = cursor.fetchall()
+    comment_str = list()
+    comment_email = list()
+    comment_len = 0
+    for comm in comment_data:
+        if not comm[1] == None:
+            a, b = comm[0].split('@')
+            comment_email.append(a[0 : len(a)-3] + '***' +'@'+b)
+            comment_str.append(comm[1])
+            comment_len += 1
+
     conn.commit()
-    return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0])
+    return render_template('details/details.html', 
+                    park=park, p_num = park_num, p_code = i[0], comment_email=comment_email, comment_str = comment_str, comment_len= comment_len)
 
 # get과 post방식 둘다 사용하기 get 화면 post 가고싶어요 받기
 @details.route("/date/<p_code>", methods=['POST'])
@@ -172,3 +187,8 @@ def hateside(p_code):
     conn.close()
     str_return = "/details/" + str(p_code)
     return  redirect(str_return)
+
+@details.route("/comment/<p_code>", methods=['POST'])
+def comment(p_code):
+    comment_str= request.form['comment']
+    return print(comment_str)
