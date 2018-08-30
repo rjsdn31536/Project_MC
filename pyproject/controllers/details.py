@@ -71,7 +71,11 @@ def detailpage2(p_code):
                 if park[park_num][key] == None:
                     park[park_num][key] = '정보없음'
 
-    sql =  "select * from want where p_code = " + '"' + str(p_code_num) + '" and e_mail = "' + session['ID'] + '"'
+    try:
+        sql =  "select * from want where p_code = " + '"' + str(p_code_num) + '" and e_mail = "' + session['ID'] + '"'
+    except:
+        return render_template('details/details.html', park=park, p_num = park_num, p_code = i[0])
+
     cursor.execute(sql)
     check_data= cursor.fetchall()
 
