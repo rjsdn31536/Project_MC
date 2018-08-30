@@ -46,7 +46,31 @@ def login_result():
 
     session['ID'] = user_email
 
-    return render_template('search/index.html', member_data=member_data)
+    # 검색 내역 데이터를 넘겨주기 위하여 DB에서 검색
+    # DB 연동 - 연결
+    conn = pymysql.connect(host='127.0.0.1',user = 'root',
+                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    # 실행자 생성
+    cursor = conn.cursor()   
+
+    execute_str = 'select p_code from want where e_mail = "' + user_email + '"'
+    cursor.execute(execute_str) 
+    park_data = cursor.fetchall()
+    # want list는 e_mail 사용자가 방문했던 주차장 이름
+    park_want_list = list()
+        
+    # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
+    park_code_list = list()
+
+    for park_code in park_data:
+        execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
+        cursor.execute(execute_str) 
+        park_name = cursor.fetchall()
+        park_want_list.append(park_name[0]['p_name'])
+        park_code_list.append(park_code['p_code'])
+
+    return render_template('search/index.html', member_data=member_data,
+            park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
 
 @app.route("/member")
 def member():
