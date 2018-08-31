@@ -25,6 +25,7 @@ def searchpage():
     try:
         session['ID']
         e_mail = session['ID']
+        
     # 로그인이 되어는 있지만 /search/로 강제 접속하는 경우
     except:
         try:

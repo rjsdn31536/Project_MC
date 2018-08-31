@@ -72,6 +72,23 @@ def login():
 @app.route("/login_result", methods=['POST'])
 def login_result():
     
+    # 검색 내역 데이터를 넘겨주기 위하여 DB에서 검색
+    # DB 연동 - 연결
+    conn = pymysql.connect(host='127.0.0.1',user = 'root',
+                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+
+    # 실행자 생성
+    cursor = conn.cursor()  
+    user_email = request.form['email']
+                    
+    # 이메일 중복 시!
+    execute_str = 'select * from member where e_mail = "' + user_email + '"'
+    cursor.execute(execute_str) 
+    park_data = cursor.fetchall()
+    if park_data != ():
+        return redirect('/')
+
+
     # 폼필드 받은 값을 변수에 저장
     user_email = request.form['email']
     user_pnum = request.form['phone']
@@ -88,11 +105,16 @@ def login_result():
     
     session['logged_in'] = True
 
+<<<<<<< HEAD
     # 검색 내역 데이터를 넘겨주기 위하여 DB에서 검색
     # DB 연동 - 연결
     conn = pymysql.connect(host='mc-project.crzhz77savee.ap-northeast-2.rds.amazonaws.com',port=3306,user='mc_project',passwd='multicampus', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
+=======
+
+ 
+>>>>>>> 4b2b1e1e3179becf06eb4bef35e501fff92f607d
 
     execute_str = 'select p_code from want where e_mail = "' + user_email + '"'
     cursor.execute(execute_str) 
@@ -102,6 +124,7 @@ def login_result():
         
     # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
     park_code_list = list()
+
 
     for park_code in park_data:
         execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
@@ -132,8 +155,6 @@ def member():
 @app.route("/member/update", methods=['POST'])
 def member_update():
     email = session['ID']
-    print('email====', email)
-    print(request.form)
     update_pnum = request.form['phone']
     update_address = request.form['address']
     update_age = request.form['age']
