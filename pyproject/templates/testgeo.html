@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=panorama,geocoder,drawing,visualization"></script>
+</head>
+<body>
+  <div id="map" style="width:600px;height:600px;"></div>
+  <script>
+  var mapDiv = document.getElementById('map');
+  var map = new naver.maps.Map(mapDiv, {
+      zoom: 3,
+      center: new naver.maps.LatLng(36.0207091, 127.9204629)
+  });
+  var data = [
+    {"weight": 0.4261945742152283, "location": {"lat": 35.1595454, "lng": 126.8526012}},
+    {'weight': 17.088763216129827, 'location': {'lat': 35.4606, 'lng': 128.2132}}, 
+    {'weight': 0.8441930989263176, 'location': {'lat': 36.4800984, 'lng': 127.2890354}}, 
+    {'weight': 7.589541840832719, 'location': {'lat': 37.8228, 'lng': 128.1555}}, 
+    {'weight': 5.007786247028932, 'location': {'lat': 36.3504119, 'lng': 127.3845475}}, 
+    {'weight': 8.302598147692812, 'location': {'lat': 35.8714354, 'lng': 128.601445}}, 
+    {'weight': 1.9506597819850833, 'location': {'lat': 37.4562557, 'lng': 126.7052062}}, 
+    {'weight': 5.048766494549628, 'location': {'lat': 36.8, 'lng': 127.7}}, 
+    {'weight': 2.96696992049832, 'location': {'lat': 35.71750000000001, 'lng': 127.153}}, 
+    {'weight': 7.196131464634046, 'location': {'lat': 36.5184, 'lng': 126.8}}, 
+    {'weight': 3.327596098680436, 'location': {'lat': 37.566535, 'lng': 126.9779692}}, 
+    {'weight': 12.712072780919598, 'location': {'lat': 37.41379999999999, 'lng': 127.5183}}, 
+    {'weight': 5.130726989591016, 'location': {'lat': 35.1795543, 'lng': 129.0756416}}, 
+    {'weight': 2.05720842553889, 'location': {'lat': 33.4890113, 'lng': 126.4983023}}, 
+    {'weight': 10.327022375215146, 'location': {'lat': 36.4919, 'lng': 128.8889}}, 
+    {'weight': 2.8686173264486516, 'location': {'lat': 35.5383773, 'lng': 129.3113596}}, 
+    {'weight': 7.1551512171133504, 'location': {'lat': 34.8679, 'lng': 126.991}}
+    ];
+
+    var dotmap = new naver.maps.visualization.DotMap({
+        map: map,
+        data: data,
+        radius: 20
+    });
+  </script>
+</body>
+</html>
