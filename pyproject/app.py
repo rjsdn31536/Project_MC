@@ -11,7 +11,7 @@ app.secret_key = "e21lr1or2AKO@2rkARKM@RAR@ANK2raar,SD2"
 
 def insertData(user_email,user_pnum,user_address,user_age,user_sex,user_family):
     # DB 연동 - 연결
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='wldaos0228', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     sql = "insert into member (e_mail,phone_number,address,age,sex,family)\
                      values (%s,%s,%s,%s,%s,%s);"
@@ -49,7 +49,7 @@ def login_result():
     # 검색 내역 데이터를 넘겨주기 위하여 DB에서 검색
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                    password='wldaos0228', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -76,7 +76,7 @@ def login_result():
 def member():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                    password='wldaos0228', db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -100,7 +100,7 @@ def member_update():
     update_sex = request.form['gender']
     update_family = request.form['family']
 
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='1234',
+    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='wldaos0228',
              db='pythondb',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     # e_mail, phone_number, address, age, sex, family

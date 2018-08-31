@@ -8,7 +8,7 @@ import re
 
 # date_num(1, p_code) 을 입력하면 want DB에서의 go_date1을 검색하여 가고싶은 사람의 개수를 return한다.
 def date_num(day, p_code):
-    conn = pymysql.connect(host='127.0.0.1',user = 'root', password='1234', db='pythondb',charset='utf8')
+    conn = pymysql.connect(host='127.0.0.1',user = 'root', password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -21,7 +21,7 @@ def date_num(day, p_code):
     return len(data)
 
 def like_num(p_code):
-    conn = pymysql.connect(host='127.0.0.1',user = 'root', password='1234', db='pythondb',charset='utf8')
+    conn = pymysql.connect(host='127.0.0.1',user = 'root', password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -65,7 +65,7 @@ def like_num(p_code):
 
 
 # db연동
-# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb', charset='utf8')
+# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='wldaos0228', db='pythondb', charset='utf8')
 
 
 details = Blueprint('details', __name__, template_folder='details')
@@ -85,7 +85,7 @@ def detailpage2(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                       password='1234', db='pythondb',charset='utf8')
+                       password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     execute_str = "select * from parkinglot where p_code = " + '"' + str(p_code_num) + '"'
@@ -196,7 +196,7 @@ def park_date(p_code):
 
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()   
     sql = "update want set go_date1=%s, go_date2=%s, go_date3=%s, go_date4=%s, go_date5=%s where e_mail = %s and p_code = %s"     
@@ -214,7 +214,7 @@ def likeside(p_code):
         
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()
     email = session['ID']
@@ -231,7 +231,7 @@ def normalside(p_code):
         
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
@@ -248,7 +248,7 @@ def hateside(p_code):
     hate = request.form['hate']
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='wldaos0228', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
@@ -263,7 +263,7 @@ def hateside(p_code):
 def comment(p_code):    
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='pythondb',charset='utf8')
+            password='wldaos0228', db='pythondb',charset='utf8')
 
     comment_str= request.form['comment']
     
