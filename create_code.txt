@@ -1,0 +1,66 @@
+CREATE TABLE `want` (
+	`go_code` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`e_mail` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_code` INT(11) UNSIGNED NOT NULL,
+	`go_date1` TINYINT(1) NULL DEFAULT '0',
+	`go_date2` TINYINT(1) NULL DEFAULT '0',
+	`go_date3` TINYINT(1) NULL DEFAULT '0',
+	`go_date4` TINYINT(1) NULL DEFAULT '0',
+	`go_date5` TINYINT(1) NULL DEFAULT '0',
+	`go_date6` TINYINT(1) NULL DEFAULT '0',
+	`go_date7` TINYINT(1) NULL DEFAULT '0',
+	`go_date8` TINYINT(1) NULL DEFAULT '0',
+	`go_date9` TINYINT(1) NULL DEFAULT '0',
+	`go_date10` TINYINT(1) NULL DEFAULT '0',
+	`go_comment` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`go_like` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`go_code`),
+	INDEX `FK_member_TO_want` (`e_mail`),
+	INDEX `FK_Parkinglot_TO_want` (`p_code`),
+	CONSTRAINT `FK_Parkinglot_TO_want` FOREIGN KEY (`p_code`) REFERENCES `parkinglot` (`p_code`),
+	CONSTRAINT `FK_member_TO_want` FOREIGN KEY (`e_mail`) REFERENCES `member` (`e_mail`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=22
+;
+
+CREATE TABLE `parkinglot` (
+	`p_code` INT(11) UNSIGNED NOT NULL,
+	`p_province` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_name` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_type` VARCHAR(4) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_address` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_lat` DOUBLE NOT NULL,
+	`p_long` DOUBLE NOT NULL,
+	`p_admit` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_number` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_desp` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date1` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date2` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date3` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date4` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date5` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date6` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date7` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date8` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date9` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`p_date10` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`p_code`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `member` (
+	`e_mail` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`phone_number` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`address` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`age` INT(7) NOT NULL,
+	`sex` CHAR(1) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`family` INT(5) NOT NULL,
+	PRIMARY KEY (`e_mail`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
