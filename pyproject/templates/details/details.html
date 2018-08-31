@@ -140,20 +140,20 @@
                   </div>
               </div>
               
-                <span>누적수 : {{day_like2}}</span>
+                <span style="font-family: 'Do Hyeon'; color: rgb(0, 0, 0); font-size: 20px">누적수 : {{day_like2}}</span>
               </form>
             </div>
             <div>
                 <form action="/details/normal/{{p_code}}" method="POST">
                   <input type="hidden" name="normal" value="1">
                   <input type="submit" value="그냥 그래요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
-                  <span>누적수 : {{day_like1}}</span>
+                  <span style="font-family: 'Do Hyeon'; color: rgb(0, 0, 0); font-size: 20px">누적수 : {{day_like1}}</span>
                 </form>
             <div>
               <form action="/details/hate/{{p_code}}" method="POST">
                 <input type="hidden" name="hate" value="0">
                 <input type="submit" value="싫어요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
-                <span>누적수 : {{day_like0}}</span>
+                <span style="font-family: 'Do Hyeon'; color: rgb(0, 0, 0); font-size: 20px">누적수 : {{day_like0}}</span>
               </form>
             </div>
           </li>
@@ -242,11 +242,11 @@
         </div>
         <div id="formBox">
           <form action="/details/date/{{p_code}}" method='POST'>
-            <input type="checkbox"  name="checkdate" value="date1"><label>14일</label> <br>
-            <input type="checkbox"  name="checkdate" value="date2"><label>15일</label> <br>
-            <input type="checkbox"  name="checkdate" value="date3"><label>16일</label> <br>
-            <input type="checkbox"  name="checkdate" value="date4"><label>17일</label> <br>
-            <input type="checkbox"  name="checkdate" value="date5"><label>18일</label> <br>
+            <input type="checkbox"  name="checkdate" value="date1"><label style="font-family:'Do Hyeon', sans-serif;font-size:20px;font-weight: unset ; color:gray">14일({{go_date[0]}}명이 가고싶어해요!)</label> <br>
+            <input type="checkbox"  name="checkdate" value="date2"><label style="font-family:'Do Hyeon', sans-serif;font-size:20px;font-weight: unset ; color:gray">15일({{go_date[1]}}명이 가고싶어해요!)</label> <br>
+            <input type="checkbox"  name="checkdate" value="date3"><label style="font-family:'Do Hyeon', sans-serif;font-size:20px;font-weight: unset ; color:gray">16일({{go_date[2]}}명이 가고싶어해요!)</label> <br>
+            <input type="checkbox"  name="checkdate" value="date4"><label style="font-family:'Do Hyeon', sans-serif;font-size:20px;font-weight: unset ; color:gray">17일({{go_date[3]}}명이 가고싶어해요!)</label> <br>
+            <input type="checkbox"  name="checkdate" value="date5"><label style="font-family:'Do Hyeon', sans-serif;font-size:20px;font-weight: unset ; color:gray">18일({{go_date[4]}}명이 가고싶어해요!)</label> <br>
             <input class="subMit" type="submit" value="저장">
             <input class="canCel" type="reset" value="취소">
           </form>
@@ -257,11 +257,11 @@
         <br>
         <h2>개방 시간</h2>
         <p>
-          <li>14일 : {{ park[p_num]['p_date1'] }} <br></li>
-          <li>15일 : {{ park[p_num]['p_date2'] }} <br></li>
-          <li>16일 : {{ park[p_num]['p_date3'] }} <br></li>
-          <li>17일 : {{ park[p_num]['p_date4'] }} <br></li>
-          <li>18일 : {{ park[p_num]['p_date5'] }} <br></li>
+          <li style="font-size: 18px">14일 : {{ park[p_num]['p_date1'] }} <br></li>
+          <li style="font-size: 18px">15일 : {{ park[p_num]['p_date2'] }} <br></li>
+          <li style="font-size: 18px">16일 : {{ park[p_num]['p_date3'] }} <br></li>
+          <li style="font-size: 18px">17일 : {{ park[p_num]['p_date4'] }} <br></li>
+          <li style="font-size: 18px">18일 : {{ park[p_num]['p_date5'] }} <br></li>
         </p>
       </div>
 

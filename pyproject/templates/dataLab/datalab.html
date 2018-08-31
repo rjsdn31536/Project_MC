@@ -26,11 +26,13 @@
     <link href="/static/datalab/css/detaiList.css" rel="stylesheet">
     <!-- 차트 관련  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <!-- drawing,visualization 를 geocoder 뒤에 붙여야한다 -->
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=panorama,geocoder,drawing,visualization"></script>
 
 
   </head>
 
-  <body id="page-top">
+  <body id="page-top" style="padding-left:200px">
 <!-- 내비게이션 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
@@ -44,16 +46,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#about">1.</a>
+            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#about">1. 세부현황</a>
           </li>
           <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#experience">2.</a>
-          </li>
-          <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#education">3.</a>
-          </li>
-          <li class="nav-item">
-            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#skills">4.</a>
+            <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#experience">2. 분포도</a>
           </li>
         </ul>
       </div>
@@ -69,20 +65,35 @@
               1. 시도별 공공주차장 현황 
             </h2>
           </li>
-          <li style="width:900px;">
-            <canvas id="sidochart"></canvas>
+          <li style="width:1000px;">
+            <canvas id="sidochart" style="width:100%"></canvas>
           </li>
         </ul>
         <script>
           var ctx = document.getElementById("sidochart").getContext('2d');
+          var data = {{ sidocount|tojson }}
+          var backgroundColor1 = []
+          var borderColor1 = []
+          // for, if 문으로 조건적으로 색상 선택
+          for(var i = 0; i < data.length; i++) {
+            if(data[i] > 1000) {
+              backgroundColor1.push('rgba(255, 99, 132, 0.2)');
+              borderColor1.push('rgba(255,99,132,1)');
+            } else {
+              backgroundColor1.push('rgba(54, 162, 235, 0.2)');
+              borderColor1.push('rgba(54, 162, 235, 1)');
+            }
+          }
           var myChart = new Chart(ctx, {
               type: 'bar',
               data: {
-                  labels: {{ sidolist |tojson }},
+                  labels: {{ sidolist|tojson }},
                   datasets: [{
                       label: '주차장 수',
-                      data: {{ sidocount |tojson }},
-                    borderWidth: 1
+                      data: data,
+                      borderWidth: 1,
+                      backgroundColor: backgroundColor1,
+                      borderColor: borderColor1
                   }]
               },
               options: {
@@ -102,47 +113,29 @@
       <!-- 2.  -->
       <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
         <div>
-          <h2>2. </h2>
+          <h2>2. 공공주차장 분포도</h2>
         </div>
-        <div>
-          <canvas id="marksChart" width="600" height="400"></canvas>
-        </div>
-      <script>
-      var marksCanvas = document.getElementById("marksChart");
-      var marksData = {
-          labels: {{ sidolist | tojson }},
-          datasets: {{ sidocount | tojson }}
-      };
-      var radarChart = new Chart(marksCanvas, {
-          type: 'radar',
-          data: marksData
-      });
-      </script>
-
-
-      </section>
-
-      <hr class="m-0">
-      <!-- 3. -->
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
-        <div>
-          <ul>
-            <li style="display:block">
-              <h2>3. </h2>
-            </li>
-
-          </ul>
+        <div id='marksChart' style="width:700px;height:700px;"></div>
+        <script>
+        var mapDiv = document.getElementById('marksChart');
+        var map = new naver.maps.Map(mapDiv, {
+                  zoom: 1,
+                  center: new naver.maps.LatLng(36.0207091, 127.9204629)
+        });
         
+        var data = {{sido_json|tojson}};
+
+        var dotmap = new naver.maps.visualization.DotMap({
+            map: map,
+            data: data,
+            radius: 40
+        });
+        </script>
+
 
       </section>
 
       <hr class="m-0">
-      <!-- 4.  -->
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills">
-        <div class="my-auto">
-          <h2 class="mb-5">4. </h2>      
-        </div>
-      </section>
     </div>
 
     <!-- Bootstrap core JavaScript -->

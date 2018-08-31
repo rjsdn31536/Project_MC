@@ -23,43 +23,54 @@ def searchpage():
 
     # 로그인을 안하고 /search/에 강제 접속할 경우 return redirect
     try:
-        e_mail = request.form['email']
+        session['ID']
+        e_mail = session['ID']
+    # 로그인이 되어는 있지만 /search/로 강제 접속하는 경우
     except:
-        return redirect('/')
+        try:
+            e_mail = request.form['email']
+        except:
+            return redirect('/')
+        
+
+
 
     execute_str = 'select * from member where e_mail = "' + e_mail + '"'
 
     cursor.execute(execute_str)
     member_data = cursor.fetchall()
 
-    # 로그인에 실패한 경우
     if member_data == ():
         return redirect('/')
 
+    
+
     # 로그인에 성공한 경우
-    else:
-        session['ID'] = e_mail
-        
-        execute_str = 'select p_code from want where e_mail = "' + e_mail + '"'
+    session['ID'] = e_mail
+
+    # 로그인 완료
+    session['logged_in'] = True
+    
+    execute_str = 'select p_code from want where e_mail = "' + e_mail + '"'
+    cursor.execute(execute_str) 
+    park_data = cursor.fetchall()
+    # want list는 e_mail 사용자가 방문했던 주차장 이름
+    park_want_list = list()
+    
+    # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
+    park_code_list = list()
+
+    for park_code in park_data:
+        execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
         cursor.execute(execute_str) 
-        park_data = cursor.fetchall()
-        # want list는 e_mail 사용자가 방문했던 주차장 이름
-        park_want_list = list()
-        
-        # want list는 e_mail 사용자가 방문했던 주차장 코드(하이퍼링크에 필요)
-        park_code_list = list()
+        park_name = cursor.fetchall()
+        park_want_list.append(park_name[0]['p_name'])
+        park_code_list.append(park_code['p_code'])
 
-        for park_code in park_data:
-            execute_str = "select p_name from parkinglot where p_code = " + str(park_code['p_code'])
-            cursor.execute(execute_str) 
-            park_name = cursor.fetchall()
-            park_want_list.append(park_name[0]['p_name'])
-            park_code_list.append(park_code['p_code'])
-        
-        return render_template('search/index.html', member_data=member_data, 
-                    park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
+    return render_template('search/index.html', member_data=member_data, 
+                park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
 
-@search.route("/result/", methods=['POST'])
+@search.route("/result/", methods=['GET', 'POST'])
 def searchResult():
     # DB 연동 - 연결
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
@@ -67,8 +78,26 @@ def searchResult():
     # 실행자 생성
     cursor = conn.cursor()   
 
-    address = request.form['address']
-    addr_ll = gmaps.geocode(address, language='ko')[0]['geometry']['location']
+    # 로그인을 안하고 /result/에 강제 접속할 경우 return redirect
+    try:
+        session['logged_in']
+    except:
+        return redirect('/')
+
+    # 로그인을 한 상태에서 /result/에 강제 접속하는 경우(역삼역으로 초기값)
+    # 본인 위치 확인이 가능하면 본인 위치 주변의 위치 찾으면 좋을듯!
+    try:
+        address = request.form['address']
+    except:
+        address = '서울역'
+
+    # 아무것도 검색을 안했을 경우 서울역으로 초기값 설정하여 검색해줌
+    # 본인 위치 확인이 가능하면 본인 위치 주변의 위치 찾으면 좋을듯!
+    try:
+        addr_ll = gmaps.geocode(address, language='ko')[0]['geometry']['location']
+    except:
+        addr_ll = gmaps.geocode('서울역', language='ko')[0]['geometry']['location']
+
     addr_x = addr_ll['lat']
     addr_y = addr_ll['lng']
 
@@ -137,3 +166,10 @@ def searchResult():
             address=str(address), addr_x=addr_x, addr_y=addr_y, park = park, p_count=p_count,
             park_want_list = park_want_list, park_want_len = len(park_want_list), park_code_list =park_code_list)
 
+
+@search.route("/logout")
+def logout():
+    session.pop('ID', None)
+    session.pop('logged_in', None)
+
+    return redirect('/')
