@@ -232,8 +232,7 @@ def normalside(p_code):
     normal = request.form['normal']
         
     # DB 연동 - 연결
-    conn = pymysql.connect(host='127.0.0.1',user = 'root',
-            password='1234', db='project_mc',charset='utf8')
+    conn = pymysql.connect(host='mc-project.crzhz77savee.ap-northeast-2.rds.amazonaws.com',port=3306,user='mc_project',passwd='multicampus', db='pythondb',charset='utf8')
     # 실행자 생성
     cursor = conn.cursor()  
     email = session['ID']
