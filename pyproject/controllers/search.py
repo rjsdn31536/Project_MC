@@ -16,8 +16,7 @@ park = dict()
 @search.route("/", methods=['GET', 'POST'])
 def searchpage():
     # DB 연동 - 연결
-    conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='project_mc',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host='mc-project.crzhz77savee.ap-northeast-2.rds.amazonaws.com',port=3306,user='mc_project',passwd='multicampus', db='pythondb',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
 
@@ -74,9 +73,8 @@ def searchpage():
 @search.route("/result/", methods=['GET', 'POST'])
 def searchResult():
     # DB 연동 - 연결
-    conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='project_mc',charset='utf8')
-    # 실행자 생성
+    conn = pymysql.connect(host='mc-project.crzhz77savee.ap-northeast-2.rds.amazonaws.com',port=3306,user='mc_project',passwd='multicampus', db='pythondb',charset='utf8')
+    # 실행자 생
     cursor = conn.cursor()   
 
     # 로그인을 안하고 /result/에 강제 접속할 경우 return redirect
@@ -139,8 +137,7 @@ def searchResult():
 
     conn.close()
 
-    conn = pymysql.connect(host='127.0.0.1',user = 'root',
-                    password='1234', db='project_mc',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host='mc-project.crzhz77savee.ap-northeast-2.rds.amazonaws.com',port=3306,user='mc_project',passwd='multicampus', db='pythondb',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
     # 실행자 생성
     cursor = conn.cursor()   
         
