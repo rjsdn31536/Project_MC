@@ -2,7 +2,7 @@ import pymysql
 
 def find_do(do):
     conn = pymysql.connect(host='127.0.0.1',user = 'root',
-         password='1234', db='pythondb1',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+         password='1234', db='project_mc',charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     execute_str = 'select count(*) cnt from parkinglot where p_province like %s'
     arg = ( do + '%' )
