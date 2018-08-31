@@ -6,6 +6,7 @@ import pandas as pd
 # 문자열에서 숫자만 추출하는 모듈
 import re
 
+# 주차장 개방 날짜 구현
 # date_num(1, p_code) 을 입력하면 want DB에서의 go_date1을 검색하여 가고싶은 사람의 개수를 return한다.
 def date_num(day, p_code):
     conn = pymysql.connect(host='127.0.0.1',user = 'root', password='1234', db='pythondb',charset='utf8')
@@ -63,9 +64,6 @@ def like_num(p_code):
     
     
 
-
-# db연동
-# conn = pymysql.connect( host='localhost',  port=5000, user='root',  passwd='1234', db='pythondb', charset='utf8')
 
 
 details = Blueprint('details', __name__, template_folder='details')
