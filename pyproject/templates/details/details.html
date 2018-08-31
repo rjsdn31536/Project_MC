@@ -26,62 +26,6 @@
     <link href="/static/details/css/detaiList.css" rel="stylesheet">
     
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
-    <!-- 좋아요 버튼 -->
-
-
-    <style>
-      .layer-wrap {
-        display: none;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        text-align: center;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-    .layer-wrap:before {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-        margin-right: -.25em;
-    }
-    .pop-layer {
-        display: inline-block;
-        vertical-align: middle;
-        width: 500px;
-        height: auto;
-        background-color: #fff;
-        border: 5px solid #3571B5;
-        z-index: 10;
-        font-family:Tahoma;
-    }
-    .pop-layer .pop-container {
-        padding: 20px 25px;
-    }
-    .pop-layer .btn-r {
-        width: 100%;
-        margin: 10px 0 20px;
-        padding-top: 10px;
-        border-top: 1px solid #DDD;
-        text-align: right;
-    }
-    a.btn-layerClose {
-        display: inline-block;
-        height: 25px;
-        padding: 0 14px 0;
-        border: 1px solid #304a8a;
-        background-color: #3f5a9d;
-        font-size: 13px;
-        color: #fff;
-        line-height: 25px;
-    }
-    #svg {
-      width: 500px;
-      height: 500px;
-    }
-    </style>
 
   </head>
 
@@ -107,40 +51,17 @@
           <li class="nav-item">
             <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#education">한줄평</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a style="font-family:'Do Hyeon', sans-serif;font-size:30px" class="nav-link js-scroll-trigger" href="#skills">이용자 분석</a>
-          </li>
+          </li> -->
           <li class="nav-item" style="margin-top:20px">
             <h5>만족도 조사</h5>
             <div>
               <form action="/details/like/{{p_code}}" method="POST">
                 <!-- hidden은 여기서 사용자에게 보이지 않는 값을 의미한다 -->
-                <a href="#layer" class="btn-layer">
                   <input type="hidden" name="like" value="2">
                   <input type="submit" value="좋아요" style="width:100px;height:40px;font-family:'Do Hyeon';margin-bottom:10px;background:white">
-                </a>
-                <div id="layer" class="layer-wrap">
-                  <div class="pop-layer">
-                      <div class="pop-container">
-                          <div class="pop-conts">
-                              <!--content //-->
-                              <p class="ctxt mb20">
-                                  Thank you.<br> 
-                                  Your registration was submitted successfully.<br> 
-                                  Selected invitees will be notified by e-mail on JANUARY 24th.<br><br> 
-                                  Hope to see you soon!
-                              </p>
-              
-                              <div class="btn-r">
-                                  <a href="#" class="btn-layerClose">Close</a>
-                              </div>
-                              <!--// content-->
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              
-                <span style="font-family: 'Do Hyeon'; color: rgb(0, 0, 0); font-size: 20px">누적수 : {{day_like2}}</span>
+                  <span style="font-family: 'Do Hyeon'; color: rgb(0, 0, 0); font-size: 20px">누적수 : {{day_like2}}</span>
               </form>
             </div>
             <div>
@@ -232,7 +153,7 @@
       </section>
 
       <hr class="m-0">
-      <!-- 가고 싶어요 -->
+
       <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
         <div>
           <h2>주차장 개방 날짜</h2>
@@ -295,10 +216,10 @@
           {% if comment_len != 0 %}
             {% for i in range(comment_len) %}
               <li style="height:48px">
-                <p>
+                <p style="margin:0;border-bottom:1px solid gray ">
                  {{comment_str[i]}}<br>
                                                    ┗ {{comment_email[i]}}
-                <hr>
+
                 </p> 
               </li>
             {% endfor %}
@@ -316,18 +237,7 @@
       </section>
 
       <hr class="m-0">
-      <!-- 누가 여기 올까요? -->
-      <!-- 데이터 기반으로한 시각화자료배치 -->
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills">
-        <div class="my-auto">
-          <h2 class="mb-5">분석기반 시각화자료</h2>
 
-          <div class="subheading mb-3">Programming Languages &amp; Tools</div>
-          
-          <div class="subheading mb-3">Workflow</div>
-       
-        </div>
-      </section>
     </div>
 
     <!-- Bootstrap core JavaScript -->
@@ -341,15 +251,6 @@
     <!-- Custom scripts for this template -->
     <script src="/static/details/js/resume.min.js"></script>
     <script src="/static/details/vendor/jquery/jquery.count.js"></script>
-    <script>
-      $('.btn-layer').on('click', function() {
-        var target = $(this).attr('href');
-        $(target).fadeIn();
-     });
-     $('.btn-layerClose').on('click', function() {
-        $('.layer-wrap').fadeOut();
-     });
-    </script>
   </body>
 
 </html>
