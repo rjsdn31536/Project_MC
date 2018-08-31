@@ -72,7 +72,14 @@ details = Blueprint('details', __name__, template_folder='details')
 
 @details.route("/")
 def detailpage():
-    return render_template('details/details.html')
+    
+    # 로그인을 안하고 /detail/에 강제 접속할 경우 return redirect
+    try:
+        session['logged_in']
+    except:
+        return redirect('/')
+
+    return redirect('/')
 
 @details.route("/<p_code>")
 def detailpage2(p_code):
