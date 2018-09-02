@@ -79,7 +79,7 @@ for i in park.index:
     if type(park['위도'][i]) == str:
         continue
     # park의 위도, 경도가 nan인 경우
-    if np.isnan(park['위도'][i]):
+    if np.isnan(park['위도'][i]) or park['위도'][i] < 30:
         # 네이버 api를 활용하여 1차 검색
         # 네이버 api는 주소로만 검색이 가능해서 건물명이 나오면 ERROR 발생
         # ERROR 발생하면 except 구문 안에서 gmap 활용하여 재 검색하여 확실한 위경도 확인
@@ -195,4 +195,4 @@ for cols in school.keys():
 combined = pd.merge(park, school, how='outer')
 
 # final.csv를 저장
-combined.to_csv('final.csv', encoding='utf-8-sig')
+combined.to_csv('/data/final_data.csv', encoding='utf-8-sig')

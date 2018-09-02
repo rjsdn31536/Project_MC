@@ -27,7 +27,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link href="/static/search_result/css/left_side_menu.css" rel="stylesheet">
   <link href="/static/search_result/css/mapdiv.css" rel="stylesheet">
+  <!-- naver map api -->
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=o3438HLG24uO6ujuBXAf&submodules=geocoder"></script>
+  <!-- navmodal CSS -->
+  <link rel="stylesheet" href="/static/search/css/navmodal.css">
   <style>
   a:link {color:black;border:none}
   a:visited {color:black;border:none}
@@ -50,7 +53,7 @@
         <a class="js-scroll-trigger" href="#page-top">{{session['ID']}} 님</a>
       </li>
       <li class="sidebar-nav-item" style="margin-top:5px;margin-left:5px">
-          <a class="js-scroll-trigger" href="#" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
+          <a class="js-scroll-trigger" href="/search/logout" style="border:1px solid #e5e8ef;width:100px;height:30px;text-align:center;padding-top:3px">로그아웃</a>
       </li>
       <li class="sidebar-nav-item" style="margin-top:10px">
         <a class="js-scroll-trigger" href="/member">정보수정</a>
@@ -66,7 +69,7 @@
             </ul>
             <ul class='dropdownList'>
               {% for i in range(park_want_len) %}
-              <a href="http://127.0.0.1:5000/details/{{park_code_list[i]}}" target="_blank" style="color:black">
+              <a href="http://52.78.56.28/details/{{park_code_list[i]}}" target="_blank" style="color:black">
                 <li>
                   <h3 style="text-align:center">{{park_want_list[i]}}</h3>
                 </li>
@@ -76,7 +79,7 @@
         </div>
       </li>
       <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="http://127.0.0.1:5000/datalab">데이터 Lab</a>
+          <a class="js-scroll-trigger" href="http://52.78.56.28/datalab">데이터 Lab</a>
       </li>
     </ul>
   </nav>
@@ -96,7 +99,7 @@
       </ul>
       <ul style="padding:0">
       {% for i in park.keys() %}
-        <a href="http://127.0.0.1:5000/details/{{i}}" target="_blank">
+        <a href="http://52.78.56.28/details/{{i}}" target="_blank">
           <li style="display:block">
               <h3>{{park[i]['p_name']}}</h3>
               <p >{{park[i]['p_address']}}</p>
@@ -179,7 +182,7 @@
             '주차장 유형 : ' + park[key]['p_type'] + ' <br />',
             '관리기관 : ' + park[key]['p_admit'] + ' <br />',
             '   </p>',
-            '<a href="http://127.0.0.1:5000/details/'+key+'" target="_blank" >상세보기</a>',
+            '<a href="http://52.78.56.28/details/'+key+'" target="_blank" >상세보기</a>',
             '</div>'
           ].join('');
           var infoWindow = new naver.maps.InfoWindow({
