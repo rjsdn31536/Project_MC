@@ -72,6 +72,7 @@ def searchpage():
 
 @search.route("/result/", methods=['GET', 'POST'])
 def searchResult():
+    
     # DB 연동 - 연결
     conn = pymysql.connect(host='mc-project.crzhz77savee.ap-northeast-2.rds.amazonaws.com',port=3306,user='mc_project',passwd='multicampus', db='pythondb',charset='utf8')
     # 실행자 생
@@ -108,7 +109,9 @@ def searchResult():
     execute_str = "select * from parkinglot where (p_lat > " + str(b) + ") and (p_lat < " + str(a) + ") and (p_long > "+ str(d) + ") and (p_long < " + str(c)+ ")"
 
     cursor.execute(execute_str)
+    global park_data
     park_data = cursor.fetchall()
+
 
     # initialize park(반복될때마다 데이터가 축적되면 안되므로))
     park = dict()
@@ -171,3 +174,4 @@ def logout():
     session.pop('logged_in', None)
 
     return redirect('/')
+print(park_data)
